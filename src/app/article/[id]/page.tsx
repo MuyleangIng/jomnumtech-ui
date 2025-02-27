@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import type { Metadata } from "next"
+// import type { Metadata } from "next"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -84,45 +84,45 @@ By following these principles and practices, you can build web applications that
   }
 }
 
-// Generate metadata for the article page
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const article = getArticleData(params.id)
-
-  const ogImage = new URL(
-      `/api/og?title=${encodeURIComponent(article.title)}&author=${encodeURIComponent(article.author.name)}`,
-      "https://medium-clone.vercel.app",
-  ).toString()
-
-  return {
-    title: article.title,
-    description: article.excerpt || article.subtitle,
-    authors: [{ name: article.author.name, url: `https://medium-clone.vercel.app/@${article.author.username}` }],
-    keywords: [...article.tags, "article", "blog", "medium"],
-    openGraph: {
-      type: "article",
-      title: article.title,
-      description: article.excerpt || article.subtitle,
-      url: `https://medium-clone.vercel.app/article/${article.id}`,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: article.title,
-        },
-      ],
-      publishedTime: new Date(article.publishedAt).toISOString(),
-      authors: [`https://medium-clone.vercel.app/@${article.author.username}`],
-      tags: article.tags,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: article.title,
-      description: article.excerpt || article.subtitle,
-      images: [ogImage],
-    },
-  }
-}
+// // Generate metadata for the article page
+// export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+//   const article = getArticleData(params.id)
+//
+//   const ogImage = new URL(
+//       `/api/og?title=${encodeURIComponent(article.title)}&author=${encodeURIComponent(article.author.name)}`,
+//       "https://medium-clone.vercel.app",
+//   ).toString()
+//
+//   return {
+//     title: article.title,
+//     description: article.excerpt || article.subtitle,
+//     authors: [{ name: article.author.name, url: `https://medium-clone.vercel.app/@${article.author.username}` }],
+//     keywords: [...article.tags, "article", "blog", "medium"],
+//     openGraph: {
+//       type: "article",
+//       title: article.title,
+//       description: article.excerpt || article.subtitle,
+//       url: `https://medium-clone.vercel.app/article/${article.id}`,
+//       images: [
+//         {
+//           url: ogImage,
+//           width: 1200,
+//           height: 630,
+//           alt: article.title,
+//         },
+//       ],
+//       publishedTime: new Date(article.publishedAt).toISOString(),
+//       authors: [`https://medium-clone.vercel.app/@${article.author.username}`],
+//       tags: article.tags,
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       title: article.title,
+//       description: article.excerpt || article.subtitle,
+//       images: [ogImage],
+//     },
+//   }
+// }
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
   const article = getArticleData(params.id)
