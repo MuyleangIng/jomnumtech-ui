@@ -1,86 +1,88 @@
-import Link from "next/link"
 import Image from "next/image"
+import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+// Mock data for related articles
+const relatedArticles = [
+  {
+    id: "1",
+    title: "Docker Compose: The Complete Guide",
+    excerpt: "Learn how to manage multi-container applications with Docker Compose",
+    coverImage: "/placeholder.svg?height=200&width=300",
+    publishedAt: "Feb 12, 2024",
+    readTime: "8 min read",
+    author: {
+      name: "Sarah Johnson",
+      username: "sarahjohnson",
+      image: "/placeholder.svg?height=40&width=40",
+      initials: "SJ",
+    },
+  },
+  {
+    id: "2",
+    title: "Kubernetes for Docker Users",
+    excerpt: "Making the transition from Docker to Kubernetes orchestration",
+    coverImage: "/placeholder.svg?height=200&width=300",
+    publishedAt: "Jan 30, 2024",
+    readTime: "12 min read",
+    author: {
+      name: "Michael Chen",
+      username: "michaelchen",
+      image: "/placeholder.svg?height=40&width=40",
+      initials: "MC",
+    },
+  },
+  {
+    id: "3",
+    title: "Docker Security Best Practices",
+    excerpt: "Protect your containerized applications with these essential security tips",
+    coverImage: "/placeholder.svg?height=200&width=300",
+    publishedAt: "Feb 5, 2024",
+    readTime: "9 min read",
+    author: {
+      name: "Alex Rivera",
+      username: "alexrivera",
+      image: "/placeholder.svg?height=40&width=40",
+      initials: "AR",
+    },
+  },
+]
+
 export function RelatedArticles({ currentArticleId }: { currentArticleId: string }) {
-  // In a real app, you would fetch related articles based on the current article
-  const articles = [
-    {
-      id: "101",
-      title: "Microservices vs Monoliths: Choosing the Right Architecture",
-      excerpt:
-        "A comprehensive comparison of microservices and monolithic architectures to help you make the right choice for your project.",
-      image: "/placeholder.svg?height=150&width=250",
-      author: {
-        name: "Jennifer Park",
-        image: "/placeholder.svg?height=40&width=40",
-        initials: "JP",
-      },
-      date: "Mar 2",
-      readTime: "8 min read",
-    },
-    {
-      id: "102",
-      title: "Optimizing Database Performance for High-Traffic Applications",
-      excerpt:
-        "Learn advanced techniques for optimizing your database to handle high traffic and large datasets efficiently.",
-      image: "/placeholder.svg?height=150&width=250",
-      author: {
-        name: "Marcus Johnson",
-        image: "/placeholder.svg?height=40&width=40",
-        initials: "MJ",
-      },
-      date: "Feb 28",
-      readTime: "11 min read",
-    },
-    {
-      id: "103",
-      title: "The Role of Caching in Modern Web Applications",
-      excerpt:
-        "Explore different caching strategies and how they can dramatically improve the performance of your web applications.",
-      image: "/placeholder.svg?height=150&width=250",
-      author: {
-        name: "Aisha Patel",
-        image: "/placeholder.svg?height=40&width=40",
-        initials: "AP",
-      },
-      date: "Feb 25",
-      readTime: "9 min read",
-    },
-  ].filter((article) => article.id !== currentArticleId)
+  // Filter out the current article if it's in the related articles list
+  const filteredArticles = relatedArticles.filter((article) => article.id !== currentArticleId)
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {articles.map((article) => (
-        <Link key={article.id} href={`/article/${article.id}`} className="group">
-          <div className="space-y-3">
-            <Image
-              src={article.image || "/placeholder.svg"}
-              alt={article.title}
-              width={250}
-              height={150}
-              className="rounded-lg object-cover"
-            />
-            <div className="space-y-2">
+      <div className="grid gap-8 md:grid-cols-3">
+        {filteredArticles.map((article) => (
+            <div key={article.id} className="space-y-3">
+              <Link href={`/article/${article.id}`} className="group">
+                <Image
+                    src={article.coverImage || "/placeholder.svg"}
+                    alt={article.title}
+                    width={300}
+                    height={200}
+                    className="aspect-video rounded-lg object-cover transition-transform group-hover:scale-105"
+                />
+                <h3 className="mt-3 font-bold leading-snug group-hover:text-gray-700">{article.title}</h3>
+                <p className="text-sm text-muted-foreground">{article.excerpt}</p>
+              </Link>
               <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
                   <AvatarImage src={article.author.image} alt={article.author.name} />
                   <AvatarFallback>{article.author.initials}</AvatarFallback>
                 </Avatar>
-                <span className="text-sm font-medium">{article.author.name}</span>
-              </div>
-              <h3 className="font-bold group-hover:underline">{article.title}</h3>
-              <p className="text-sm text-muted-foreground line-clamp-2">{article.excerpt}</p>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{article.date}</span>
-                <span>·</span>
-                <span>{article.readTime}</span>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Link href={`/@${article.author.username}`} className="font-medium hover:underline">
+                    {article.author.name}
+                  </Link>
+                  <span>·</span>
+                  <span>{article.readTime}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
-      ))}
-    </div>
+        ))}
+      </div>
   )
 }
 
