@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Bookmark, Heart, MessageSquare } from "lucide-react"
 import { RelatedArticles } from "@/components/related-articles"
-import { ArticleComments } from "@/components/article-comments"
+// import { ArticleComments } from "@/components/article-comments"
 import { ShareArticle } from "@/components/share-article"
 
 // This would typically come from a database or API
@@ -229,7 +229,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
           {/* Comments */}
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Comments ({article.comments})</h2>
-            <ArticleComments articleId={article.id} />
+            {/*<ArticleComments articleId={article.id} />*/}
           </div>
         </article>
 
