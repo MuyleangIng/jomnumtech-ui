@@ -22,20 +22,20 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
-    metadataBase: new URL("https://qci.dlr.de/wp-content/uploads/2022/10/symbolbild-quantentechnologie-qubits2.jpg"),
+    metadataBase: new URL("http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png"),
     alternates: {
         canonical: "/",
     },
     openGraph: {
         type: "website",
         locale: "en_US",
-        url: "https://qci.dlr.de/wp-content/uploads/2022/10/symbolbild-quantentechnologie-qubits2.jpg",
+        url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
         title: "QDev Blog | Where good ideas find you",
         description: "Discover stories, thinking, and expertise from writers on any topic.",
         siteName: "QDev Blog",
         images: [
             {
-                url: "https://qci.dlr.de/wp-content/uploads/2022/10/symbolbild-quantentechnologie-qubits2.jpg",
+                url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
                 width: 1200,
                 height: 630,
                 alt: "QDev Blog",
