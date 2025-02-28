@@ -198,7 +198,6 @@ import { useState } from "react"
 import Link from "next/link"
 import { Bell, Edit, LogIn, Search, User, Webhook } from "lucide-react"
 import { useAuth } from "@/components/auth/AuthContext"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -210,6 +209,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Image from "next/image";
 
 export function Navbar() {
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
@@ -273,7 +273,7 @@ export function Navbar() {
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" className="rounded-full">
                           {user.profile_image ? (
-                              <img
+                              <Image
                                   src={user.profile_image || "/placeholder.svg"}
                                   alt={user.username || "User"}
                                   className="h-8 w-8 rounded-full"

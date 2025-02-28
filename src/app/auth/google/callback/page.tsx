@@ -43,9 +43,14 @@ export default function GoogleCallback() {
             console.log("Google Login Response:", text); // Log raw response
             try {
               return JSON.parse(text); // Try parsing JSON
-            } catch (e) {
-              throw new Error("Invalid JSON response from server");
+            } catch (e: unknown) {
+              if (e instanceof SyntaxError) {
+                console.error("JSON parsing error:", e.message);
+                throw new Error("Invalid JSON response from server");
+              }
+              throw new Error("Unexpected error occurred");
             }
+
           })
           .then((data) => {
             console.log("Google Login Response:", data);
