@@ -11,6 +11,7 @@ import { Bold, Italic, List, ListOrdered, ImageIcon, LinkIcon, Code, Quote, Head
 import ReactMarkdown from "react-markdown"
 import { createArticle, uploadImage } from "@/lib/api"
 import { useToast } from "@/components/ui/use-toast"
+import Image from "next/image";
 
 interface Category {
   id: number
@@ -25,7 +26,7 @@ interface Tag {
 interface ArticleFormProps {
   categories: Category[]
   tags: Tag[]
-  token: any
+  token: string
 }
 
 export default function ArticleForm({ categories, tags, token }: ArticleFormProps) {
@@ -304,10 +305,12 @@ export default function ArticleForm({ categories, tags, token }: ArticleFormProp
               </Button>
               {imageUrl && (
                 <div className="mt-2">
-                  <img
+                  <Image
                     src={imageUrl || "/placeholder.svg"}
                     alt="Cover preview"
                     className="mt-2 h-40 w-full rounded-md object-cover"
+                    width={100}
+                    height={100}
                   />
                 </div>
               )}

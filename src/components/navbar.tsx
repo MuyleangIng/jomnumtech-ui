@@ -277,6 +277,9 @@ export function Navbar() {
                                   src={user.profile_image || "/placeholder.svg"}
                                   alt={user.username || "User"}
                                   className="h-8 w-8 rounded-full"
+                                  width={100}
+                                  height={100}
+                                  unoptimized
                               />
                           ) : (
                               <User className="h-5 w-5" />
