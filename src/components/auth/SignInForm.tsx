@@ -22,7 +22,7 @@ export function SignInForm() {
 
   const handleGoogleLogin = () => {
     const clientId = "864319511903-9ppi277qfje6aa3nt2obh0d1tohlro2m.apps.googleusercontent.com"
-    const redirectUri = "http://localhost:3000/auth/google/callback" // Ensure it matches backend
+    const redirectUri = "https://jomnumtech-api.shinoshike.studio/auth/google/callback" // Ensure it matches backend
     const scope = "openid email profile" // Add 'openid'
 
     const googleAuthUrl =
@@ -41,7 +41,7 @@ export function SignInForm() {
     setIsLoading(true)
 
     try {
-      const response = await fetch("http://localhost:8000/token", {
+      const response = await fetch("https://jomnumtech-api.shinoshike.studio/token", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
