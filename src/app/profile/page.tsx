@@ -1,11 +1,15 @@
+"use client"
 import Image from "next/image"
 import Link from "next/link"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Edit, Settings, Twitter } from "lucide-react"
+import {useAuth} from "@/components/auth/AuthContext";
 
 export default function ProfilePage() {
+  const { user } = useAuth()
+  console.log(user)
   // In a real app, you would fetch the user profile data
   const profile = {
     name: "Michael Brown",
@@ -51,21 +55,21 @@ export default function ProfilePage() {
     <div>
       {/* Cover Image */}
       <div className="relative h-48 w-full sm:h-64 md:h-80">
-        <Image src={profile.coverImage || "/placeholder.svg"} alt="Cover" fill className="object-cover" priority />
+        <Image src={user.profile_image || "/placeholder.svg"} alt="Cover" fill className="object-cover" priority />
       </div>
 
       {/* Profile Info */}
       <div className="container max-w-5xl">
         <div className="relative -mt-20 flex flex-col items-center px-4 sm:flex-row sm:items-end sm:px-0">
           <Avatar className="h-32 w-32 border-4 border-background sm:h-40 sm:w-40">
-            <AvatarImage src={profile.image} alt={profile.name} />
+            <AvatarImage src={user.profile_image} alt={profile.name} />
             <AvatarFallback>{profile.initials}</AvatarFallback>
           </Avatar>
 
           <div className="mt-4 flex flex-1 flex-col items-center space-y-4 sm:ml-6 sm:items-start">
             <div className="text-center sm:text-left">
-              <h1 className="text-2xl font-bold sm:text-3xl">{profile.name}</h1>
-              <p className="text-muted-foreground">@{profile.username}</p>
+              <h1 className="text-2xl font-bold sm:text-3xl">{user.username || profile.name}</h1>
+              <p className="text-muted-foreground">@{user.username}</p>
             </div>
 
             <div className="flex w-full flex-wrap items-center justify-center gap-4 sm:justify-start">
