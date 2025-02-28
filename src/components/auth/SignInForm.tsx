@@ -22,7 +22,8 @@ export function SignInForm() {
 
   const handleGoogleLogin = () => {
     const clientId = "864319511903-9ppi277qfje6aa3nt2obh0d1tohlro2m.apps.googleusercontent.com"
-    const redirectUri = "https://jomnumtech-api.shinoshike.studio/auth/google/callback" // Ensure it matches backend
+    const redirectUri = `${window.location.origin}/auth/google/callback`;
+    // const redirectUri = "https://jomnumtech-api.shinoshike.studio/auth/google/callback" // Ensure it matches backend
     const scope = "openid email profile" // Add 'openid'
 
     const googleAuthUrl =
