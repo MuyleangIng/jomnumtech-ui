@@ -196,7 +196,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { Bell, Edit, LogIn, Search, User, Webhook } from "lucide-react"
 import { useAuth } from "@/components/auth/AuthContext"
 
@@ -213,7 +212,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function Navbar() {
-  const pathname = usePathname()
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
   const [authDialogView, setAuthDialogView] = useState<"sign-in" | "sign-up">("sign-in")
   const { user, logout } = useAuth()

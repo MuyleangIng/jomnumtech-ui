@@ -5,7 +5,7 @@ interface User {
     id: number;
     email: string;
     username: string;
-    image?: string;
+    profile_image?: string;
 }
 
 interface AuthTokens {

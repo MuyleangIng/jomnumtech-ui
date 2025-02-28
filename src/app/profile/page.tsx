@@ -6,10 +6,27 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Edit, Settings, Twitter } from "lucide-react"
 import {useAuth} from "@/components/auth/AuthContext";
+import {redirect} from "next/navigation";
+
+export interface User {
+  id: number;
+  email: string;
+  username: string;
+  slug?: string | null; // Nullable in your response
+  profile_image?: string | null;
+  total_followers: number;
+  total_following: number;
+  credits: number;
+  total_earned_credits: number;
+  total_spent_credits: number;
+}
 
 export default function ProfilePage() {
   const { user } = useAuth()
   console.log(user)
+  if (!user) {
+    redirect("/")
+  }
   // In a real app, you would fetch the user profile data
   const profile = {
     name: "Michael Brown",

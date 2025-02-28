@@ -62,7 +62,7 @@ export default function GoogleCallback() {
                 description: "You have been signed in with Google.",
               });
 
-              router.push("/dashboard");
+              router.push("/profile");
             } else {
               throw new Error("Invalid response format from server");  // ✅ More specific error handling
             }

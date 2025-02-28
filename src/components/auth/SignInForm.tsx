@@ -66,7 +66,7 @@ export function SignInForm() {
         title: "Success!",
         description: "You have been signed in.",
       })
-      router.push("/dashboard")
+      router.push("/profile")
     } catch (error) {
       toast({
         title: "Error signing in",
