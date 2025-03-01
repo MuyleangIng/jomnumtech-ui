@@ -25,6 +25,10 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'www.zdnet.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'jomnumtech-api.shinoshike.studio',
             }
         ],
     },
