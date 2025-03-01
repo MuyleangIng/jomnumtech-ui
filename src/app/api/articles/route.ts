@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server"
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-
+        console.log(body)
         // Get the authorization header from the incoming request
         const authHeader = request.headers.get("Authorization")
 
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Forward the request to your backend
-        const response = await fetch("https://jomnumtech-api.shinoshike.studio/articles/", {
+        const response = await fetch("http://localhost:8000/articles/", {
             method: "POST",
             headers: {
                 Authorization: authHeader,

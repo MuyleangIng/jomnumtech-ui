@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: "standalone",
     eslint: {
         ignoreDuringBuilds: true,
     },
@@ -16,6 +17,14 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'i.pinimg.com',
+            },
+            {
+                protocol: 'http',
+                hostname: '136.228.158.126',
+            },
+            {
+                protocol: 'https',
+                hostname: 'www.zdnet.com',
             }
         ],
     },

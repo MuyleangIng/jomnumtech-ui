@@ -11,7 +11,7 @@ export function FeaturedArticles() {
       title: "The Art of Building Scalable Web Applications",
       excerpt:
         "Learn the principles and practices that enable you to build web applications that can handle millions of users.",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://www.zdnet.com/a/img/resize/7ec3f737c776d79817102d14b7c74dc872f536a3/2017/06/12/a7ab39a5-fb9a-4d65-817b-8acdbd96059b/atlassiandevops.png?auto=webp&fit=crop&height=900&width=1200",
       author: {
         name: "Michael Brown",
         image: "/placeholder.svg?height=40&width=40",
