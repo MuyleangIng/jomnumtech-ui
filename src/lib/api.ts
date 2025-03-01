@@ -97,7 +97,7 @@ export async function fetchMyArticles(token: string): Promise<Article[]> {
   try {
     console.log(`Fetching articles with token: ${token}`);
 
-    const response = await fetch("http://localhost:8000/articles/my", {
+    const response = await fetch("https://jomnumtech-api.shinoshike.studio/articles/my", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`, // ✅ Use dynamic token
@@ -139,7 +139,7 @@ export async function updateUser(token: string, userData: Partial<User>): Promis
   try {
     console.log(`Updating user with token: ${token}`)
 
-    const response = await fetch("http://localhost:8000/auth/profile", {
+    const response = await fetch("https://jomnumtech-api.shinoshike.studio/auth/profile", {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
