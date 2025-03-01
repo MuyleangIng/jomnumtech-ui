@@ -225,7 +225,7 @@ export default function ProfilePage() {
     setLoadingArticle(articleId) // Show loading state for this article
 
     try {
-      const response = await fetch(`http://localhost:8000/articles/${articleId}/visibility`, {
+      const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${articleId}/visibility`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${tokens.access_token}`,
