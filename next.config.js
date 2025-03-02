@@ -29,6 +29,10 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'jomnumtech-api.shinoshike.studio',
+            },
+            {
+                protocol: 'https',
+                hostname: 'source.unsplash.com',
             }
         ],
     },
