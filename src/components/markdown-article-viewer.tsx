@@ -111,7 +111,7 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
               <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-2">
                   <Link
-                      href={`/@${articleAuthor.username}`}
+                      href={`/${articleAuthor.username}`}
                       className="font-medium hover:underline"
                   >
                     {articleAuthor.name}
