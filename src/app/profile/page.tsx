@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Edit, Settings, Upload, ZoomIn, ZoomOut, Camera, X } from "lucide-react"
 import { useAuth } from "@/components/auth/AuthContext"
 import { redirect } from "next/navigation"
-import { fetchMyArticles, uploadImage, updateUser as updateUserService } from "@/lib/api"
+import {fetchMyArticles, uploadImage, updateUser as updateUserService, deleteArticle} from "@/lib/api"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import {
   Dialog,
@@ -87,6 +87,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Partial<User>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Image cropping state
   const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -95,7 +96,8 @@ export default function ProfilePage() {
   const [imageSrc, setImageSrc] = useState<string | null>(null)
   const [cropperOpen, setCropperOpen] = useState(false)
   const [uploadType, setUploadType] = useState<"profile" | "cover">("profile")
-
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [articleToDelete, setArticleToDelete] = useState<Article | null>(null)
   // Handle file input for both profile and cover images
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>, type: "profile" | "cover") => {
     const file = event.target.files?.[0]
@@ -112,7 +114,34 @@ export default function ProfilePage() {
       setZoom(1)
     }
   }
+  const handleDeleteArticle = async () => {
+    if (!articleToDelete || !tokens?.access_token) return
 
+    setIsSubmitting(true)
+    try {
+      const success = await deleteArticle(articleToDelete.id, tokens.access_token)
+      if (success) {
+        setArticles(articles.filter((article) => article.id !== articleToDelete.id))
+        toast({
+          title: "Article deleted",
+          description: "Your article has been successfully deleted.",
+        })
+      } else {
+        throw new Error("Failed to delete article")
+      }
+    } catch (error) {
+      console.error("Error deleting article:", error)
+      toast({
+        title: "Delete failed",
+        description: "There was an error deleting your article. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+      setDeleteDialogOpen(false)
+      setArticleToDelete(null)
+    }
+  }
   // Handle crop complete
   const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
@@ -602,7 +631,13 @@ export default function ProfilePage() {
                                   </svg>
                                   <span>Duplicate</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="flex items-center cursor-pointer text-red-500 focus:text-red-500">
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                      setArticleToDelete(article)
+                                      setDeleteDialogOpen(true)
+                                    }}
+                                    className="flex items-center cursor-pointer text-red-500 focus:text-red-500"
+                                >
                                   <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       width="16"
@@ -654,6 +689,7 @@ export default function ProfilePage() {
                           )}
                         </article>
                     ))
+
                 ) : (
                     <div className="text-center py-8">No articles found. Start writing your first article!</div>
                 )}
@@ -673,7 +709,24 @@ export default function ProfilePage() {
             </Tabs>
           </div>
         </div>
-
+        <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Delete Article</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this article? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteArticle} disabled={isSubmitting}>
+              {isSubmitting ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
         {/* Edit Profile Dialog */}
         <Dialog open={isEditing} onOpenChange={setIsEditing}>
           <DialogContent className="sm:max-w-[600px]">
@@ -833,5 +886,6 @@ export default function ProfilePage() {
         </Dialog>
       </div>
   )
+
 }
 
