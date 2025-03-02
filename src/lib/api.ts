@@ -2,6 +2,48 @@
 
 import {Article} from "@/app/profile/page";
 import User from "@/types/user"
+
+export async function updateArticle(id: number, article: Partial<Article>, token: string): Promise<Article | null> {
+  if (!token) {
+    console.error("No authentication token provided")
+    return null
+  }
+
+  try {
+    console.log(`Updating article with ID: ${id}`)
+
+    const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(article),
+    })
+
+    console.log("Response:", response)
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      console.error(`Error updating article: ${errorData.message || response.statusText}`)
+      return null
+    }
+
+    const updatedArticle = await response.json()
+    console.log("Updated article:", updatedArticle)
+
+    if (!updatedArticle || typeof updatedArticle !== "object") {
+      console.warn("API did not return a valid article object:", updatedArticle)
+      return null
+    }
+
+    return updatedArticle
+  } catch (error) {
+    console.error("Error updating article:", error)
+    return null
+  }
+}
+
 export async function createArticle(article: any, token: string) {
   const response = await fetch("/api/articles", {
     method: "POST",
@@ -52,37 +94,68 @@ export async function getArticle(id: string, token?: string) {
   return response.json()
 }
 
-export async function updateArticle(id: string, article: any, token: string) {
-  const response = await fetch(`/api/articles/${id}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(article),
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to update article: ${response.statusText}`)
+export async function deleteArticle(id: number, token: string): Promise<boolean> {
+  if (!token) {
+    console.error("No authentication token provided")
+    return false
   }
 
-  return response.json()
-}
+  try {
+    const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-export async function deleteArticle(id: string, token: string) {
-  const response = await fetch(`/api/articles/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+    if (!response.ok) {
+      console.error(`Error deleting article: ${response.statusText}`)
+      return false
+    }
 
-  if (!response.ok && response.status !== 204) {
-    throw new Error(`Failed to delete article: ${response.statusText}`)
+    return true
+  } catch (error) {
+    console.error("Error deleting article:", error)
+    return false
   }
-
-  return true
 }
+
+export async function fetchCategories(): Promise<string[]> {
+  try {
+    const response = await fetch("https://jomnumtech-api.shinoshike.studio/categories/", {
+      method: "GET",
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const categories = await response.json()
+    return categories
+  } catch (error) {
+    console.error("Error fetching categories:", error)
+    return []
+  }
+}
+
+export async function fetchTags(): Promise<string[]> {
+  try {
+    const response = await fetch("https://jomnumtech-api.shinoshike.studio/tags/", {
+      method: "GET",
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const tags = await response.json()
+    return tags
+  } catch (error) {
+    console.error("Error fetching tags:", error)
+    return []
+  }
+}
+
 /**
  * Fetches articles authored by the current authenticated user
  * @param token The authentication token
