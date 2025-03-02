@@ -88,24 +88,43 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
       <div className="container max-w-[728px] py-10">
         <article className="space-y-8">
           {/* Article Header */}
-          <div className="space-y-4">
-            <h1 className="text-3xl font-bold font-serif tracking-tight sm:text-4xl">{article.title}</h1>
-            {article.subtitle && <p className="text-xl text-muted-foreground">{article.subtitle}</p>}
+          <div className="space-y-3 sm:space-y-4">
+            {/* Article Title */}
+            <h1 className="text-2xl sm:text-3xl font-bold font-serif tracking-tight">
+              {article.title}
+            </h1>
 
-            <div className="flex items-center gap-4">
-              <Avatar className="h-12 w-12">
+            {/* Subtitle (if available) */}
+            {article.subtitle && (
+                <p className="text-lg text-muted-foreground">{article.subtitle}</p>
+            )}
+
+            {/* Author Section */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+              {/* Author Avatar */}
+              <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
                 <AvatarImage src={articleAuthor.image} alt={articleAuthor.name} />
                 <AvatarFallback>{articleAuthor.initials}</AvatarFallback>
               </Avatar>
-              <div className="flex-1">
+
+              {/* Author Info & Actions */}
+              <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <Link href={`/@${articleAuthor.username}`} className="font-medium hover:underline">
+                  <Link
+                      href={`/@${articleAuthor.username}`}
+                      className="font-medium hover:underline"
+                  >
                     {articleAuthor.name}
                   </Link>
-                  <Button variant="outline" size="sm" className="h-7 rounded-full text-xs">
+                  <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-6 sm:h-7 rounded-full text-xs"
+                  >
                     Follow
                   </Button>
                 </div>
+
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                   <span>{formattedDate}</span>
                   <span>·</span>
@@ -113,40 +132,47 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
                 </div>
               </div>
 
+              {/* Action Buttons */}
               <div className="flex items-center gap-2">
                 <ShareButton article={article} />
-                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+                <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 rounded-full">
                   <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                   >
                     <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3Z"></path>
                   </svg>
                 </Button>
-                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={toggleBookmark}>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 sm:h-9 sm:w-9 rounded-full"
+                    onClick={toggleBookmark}
+                >
                   <Bookmark className={cn("h-5 w-5", bookmarked && "fill-current")} />
                 </Button>
               </div>
             </div>
           </div>
 
+
           {/* Cover Image */}
-          {article.image_url && (
-            <Image
-              src={article.image_url || "/placeholder.svg"}
-              alt={article.title}
-              width={1200}
-              height={600}
-              className="rounded-lg object-cover"
-              priority
-            />
-          )}
+          {/*{article.image_url && (*/}
+          {/*  <Image*/}
+          {/*    src={article.image_url || "/placeholder.svg"}*/}
+          {/*    alt={article.title}*/}
+          {/*    width={1200}*/}
+          {/*    height={600}*/}
+          {/*    className="rounded-lg object-cover"*/}
+          {/*    priority*/}
+          {/*  />*/}
+          {/*)}*/}
 
           {/* Article Content */}
           <div className="prose prose-lg max-w-none font-serif article-content">
