@@ -16,7 +16,14 @@ import {
     Facebook,
     Globe, Bookmark,
 } from "lucide-react"
-
+import {FollowerCard} from "@/components/profile/FollowerCard";
+import {FollowButton} from "@/components/profile/FollowButton";
+type Follower = {
+    id: string;
+    username: string;
+    slug: string | null;
+    profile_image: string;
+}
 // Types from your existing profile page
 interface User {
     id: number
@@ -81,7 +88,25 @@ async function getUserByUsername(username: string): Promise<User | null> {
         return null
     }
 }
+//
+async function getFollowerByUsername(username: string): Promise<Follower[]> {    try {
+        const response = await fetch(`https://jomnumtech-api.shinoshike.studio/users/${username}/followers`, {
+            method: "GET",
+        })
+        console.log("response",response)
+        if (!response.ok) {
+            if (response.status === 404) {
+                return null
+            }
+            throw new Error(`Failed to fetch user: ${response.statusText}`)
+        }
 
+        return await response.json()
+    } catch (error) {
+        console.error("Error fetching user:", error)
+        return null
+    }
+}
 // Fetch user's public articles
 async function getUserArticles(username: string): Promise<Article[]> {
     try {
@@ -121,11 +146,11 @@ function calculateReadTime(content: string) {
 
 export default async function UserProfilePage({ params }: { params: { username: string } }) {
     const user = await getUserByUsername(params.username)
-    // If user not found, show 404 page
+    const followers = await getFollowerByUsername(params.username)    // If user not found, show 404 page
     if (!user) {
         notFound()
     }
-
+    console.log("user data", followers)
     // Use username instead of user.id to fetch articles
     const articles = await getUserArticles(params.username)
     // Filter only public articles
@@ -184,10 +209,11 @@ export default async function UserProfilePage({ params }: { params: { username: 
                                 {/*    <MessageCircle className="mr-2 h-4 w-4" />*/}
                                 {/*    Message*/}
                                 {/*</Button>*/}
-                                <Button variant="outline" className="rounded-full">
-                                    <Users className="mr-2 h-4 w-4" />
-                                    Follow
-                                </Button>
+                                {/*<Button variant="outline" className="rounded-full">*/}
+                                {/*    <Users className="mr-2 h-4 w-4" />*/}
+                                {/*    Follow*/}
+                                {/*</Button>*/}
+                                <FollowButton userId={user.id} />
                                 <Button variant="ghost" size="icon" className="rounded-full">
                                     <MoreHorizontal className="h-5 w-5" />
                                     <span className="sr-only">More options</span>
@@ -415,9 +441,23 @@ export default async function UserProfilePage({ params }: { params: { username: 
                                         <span className="text-muted-foreground">{user.total_followers} followers</span>
                                     </div>
 
-                                    <div className="text-center py-8">
-                                        <p className="text-muted-foreground">Friend list is not available in the public profile view.</p>
-                                    </div>
+                                    {followers && followers.length > 0 ? (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {followers.map((follower) => (
+                                                <FollowerCard
+                                                    key={follower.id}
+                                                    id={follower.id}
+                                                    username={follower.username}
+                                                    slug={follower.slug || follower.username}
+                                                    profile_image={follower.profile_image}
+                                                />
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-8">
+                                            <p className="text-muted-foreground">No followers yet.</p>
+                                        </div>
+                                    )}
                                 </TabsContent>
 
                                 <TabsContent value="photos" className="bg-white rounded-lg shadow p-6">
