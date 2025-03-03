@@ -334,7 +334,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-// import {Notifications} from "@/components/Notifications";
+import {Notifications} from "@/components/Notifications";
 
 export function Navbar() {
     const [authDialogOpen, setAuthDialogOpen] = useState(false)
