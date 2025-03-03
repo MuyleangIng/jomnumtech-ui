@@ -334,7 +334,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {Notifications} from "@/components/Notifications";
+// import {Notifications} from "@/components/Notifications";
 
 export function Navbar() {
     const [authDialogOpen, setAuthDialogOpen] = useState(false)
@@ -417,35 +417,35 @@ export function Navbar() {
                         {/*<Button variant="ghost" size="icon">*/}
                         {/*    <Bell className="h-5 w-5" />*/}
                         {/*</Button>*/}
-                        {/* Notifications (Bell Icon) */}
-                        {/* Notifications (Bell Icon) with Alert Count */}
-            {/*            <div className="relative">*/}
-            {/*                <Button variant="ghost" size="icon" onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}>*/}
-            {/*                    <Bell className="h-5 w-5" />*/}
-            {/*                    /!* Notification Badge (Only shows if there are notifications) *!/*/}
-            {/*                    {3 > 0 && (*/}
-            {/*                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">*/}
-            {/*    3*/}
-            {/*</span>*/}
-            {/*                    )}*/}
-            {/*                </Button>*/}
+                         Notifications (Bell Icon)
+                         Notifications (Bell Icon) with Alert Count
+                        <div className="relative">
+                            <Button variant="ghost" size="icon" onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}>
+                                <Bell className="h-5 w-5" />
+                                {/* Notification Badge (Only shows if there are notifications) */}
+                                {3 > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                3
+            </span>
+                                )}
+                            </Button>
 
-            {/*                /!* Notification Dropdown (Centered Below) *!/*/}
-            {/*                {isNotificationsOpen && (*/}
-            {/*                    <div*/}
-            {/*                        ref={dropdownRef}*/}
-            {/*                        className="absolute right-1/2 translate-x-1/2 mt-2 w-64 bg-white shadow-md border rounded-lg p-3 z-50"*/}
-            {/*                    >*/}
-            {/*                        <p className="text-sm font-semibold">Notifications</p>*/}
-            {/*                        <ul className="mt-2 space-y-2">*/}
-            {/*                            <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">🔔 New article published!</li>*/}
-            {/*                            <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">📩 You have a new message</li>*/}
-            {/*                            <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">🚀 Check out our latest update!</li>*/}
-            {/*                        </ul>*/}
-            {/*                    </div>*/}
-            {/*                )}*/}
-            {/*            </div>*/}
-                        <Notifications />
+                            {/* Notification Dropdown (Centered Below) */}
+                            {isNotificationsOpen && (
+                                <div
+                                    ref={dropdownRef}
+                                    className="absolute right-1/2 translate-x-1/2 mt-2 w-64 bg-white shadow-md border rounded-lg p-3 z-50"
+                                >
+                                    <p className="text-sm font-semibold">Notifications</p>
+                                    <ul className="mt-2 space-y-2">
+                                        <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">🔔 New article published!</li>
+                                        <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">📩 You have a new message</li>
+                                        <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">🚀 Check out our latest update!</li>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                        {/*<Notifications />*/}
                         <Button variant="ghost" size="icon" asChild>
                            <Link href="/write">
                              <Edit className="h-5 w-5" />
