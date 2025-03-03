@@ -12,14 +12,14 @@
 //
 // export const metadata: Metadata = {
 //     title: {
-//         default: "QDev Blog  | Where good ideas find you",
-//         template: "%s | QDev Blog"
+//         default: "JomNum Blog  | Where good ideas find you",
+//         template: "%s | JomNum Blog"
 //     },
 //     description: "Discover stories, thinking, and expertise from writers on any topic.",
 //     keywords: ["blog", "articles", "writing", "reading", "medium", "content"],
-//     authors: [{ name: "QDev Blog Team" }],
-//     creator: "QDev Blog",
-//     publisher: "QDev Blog",
+//     authors: [{ name: "JomNum Blog Team" }],
+//     creator: "JomNum Blog",
+//     publisher: "JomNum Blog",
 //     formatDetection: {
 //         email: false,
 //         address: false,
@@ -33,21 +33,21 @@
 //         type: "website",
 //         locale: "en_US",
 //         url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
-//         title: "QDev Blog | Where good ideas find you",
+//         title: "JomNum Blog | Where good ideas find you",
 //         description: "Discover stories, thinking, and expertise from writers on any topic.",
-//         siteName: "QDev Blog",
+//         siteName: "JomNum Blog",
 //         images: [
 //             {
 //                 url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
 //                 width: 1200,
 //                 height: 630,
-//                 alt: "QDev Blog",
+//                 alt: "JomNum Blog",
 //             },
 //         ],
 //     },
 //     twitter: {
 //         card: "summary_large_image",
-//         title: "QDev Blog | Where good ideas find you",
+//         title: "JomNum Blog | Where good ideas find you",
 //         description: "Discover stories, thinking, and expertise from writers on any topic.",
 //         creator: "@mediumclone",
 //         images: ["/twitter-image.png"],
@@ -111,14 +111,14 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
     title: {
-        default: "QDev Blog  | Where good ideas find you",
-        template: "%s | QDev Blog",
+        default: "JomNum Blog  | Where good ideas find you",
+        template: "%s | JomNum Blog",
     },
     description: "Discover stories, thinking, and expertise from writers on any topic.",
     keywords: ["blog", "articles", "writing", "reading", "medium", "content"],
-    authors: [{ name: "QDev Blog Team" }],
-    creator: "QDev Blog",
-    publisher: "QDev Blog",
+    authors: [{ name: "JomNum Blog Team" }],
+    creator: "JomNum Blog",
+    publisher: "JomNum Blog",
     formatDetection: {
         email: false,
         address: false,
@@ -132,21 +132,21 @@ export const metadata: Metadata = {
         type: "website",
         locale: "en_US",
         url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
-        title: "QDev Blog | Where good ideas find you",
+        title: "JomNum Blog | Where good ideas find you",
         description: "Discover stories, thinking, and expertise from writers on any topic.",
-        siteName: "QDev Blog",
+        siteName: "JomNum Blog",
         images: [
             {
                 url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
                 width: 1200,
                 height: 630,
-                alt: "QDev Blog",
+                alt: "JomNum Blog",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "QDev Blog | Where good ideas find you",
+        title: "JomNum Blog | Where good ideas find you",
         description: "Discover stories, thinking, and expertise from writers on any topic.",
         creator: "@mediumclone",
         images: ["/twitter-image.png"],

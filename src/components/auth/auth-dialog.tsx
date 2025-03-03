@@ -98,7 +98,7 @@ export function AuthDialog({ open, onOpenChange, initialView = "sign-in" }: Auth
         <DialogContent className="sm:max-w-[425px] p-6">
           <DialogHeader className="mb-4">
             <DialogTitle className="text-center text-2xl font-bold">
-              {view === "sign-in" ? "Welcome back." : "Join QDev Blog."}
+              {view === "sign-in" ? "Welcome back." : "Join JomNum Blog."}
             </DialogTitle>
             <Button variant="ghost" size="icon" className="absolute right-4 top-4" onClick={() => onOpenChange(false)}>
               <X className="h-4 w-4" />

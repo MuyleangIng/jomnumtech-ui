@@ -7,7 +7,7 @@ export function Footer() {
         <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
           {/*<BookOpen className="h-6 w-6" />*/}
           <p className="text-center text-sm leading-loose md:text-left">
-            &copy; {new Date().getFullYear()} QDev Blog. All rights reserved.
+            &copy; {new Date().getFullYear()} JomNum Blog. All rights reserved.
           </p>
         </div>
         <div className="flex gap-4">
