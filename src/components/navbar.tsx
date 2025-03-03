@@ -417,8 +417,8 @@ export function Navbar() {
                         {/*<Button variant="ghost" size="icon">*/}
                         {/*    <Bell className="h-5 w-5" />*/}
                         {/*</Button>*/}
-                         Notifications (Bell Icon)
-                         Notifications (Bell Icon) with Alert Count
+                        {/* Notifications (Bell Icon)*/}
+                        {/* Notifications (Bell Icon) with Alert Count*/}
                         <div className="relative">
                             <Button variant="ghost" size="icon" onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}>
                                 <Bell className="h-5 w-5" />
