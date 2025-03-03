@@ -54,7 +54,7 @@ export function TrendingArticles() {
     <div className="space-y-6">
       <div className="flex items-center gap-2">
         <TrendingUp className="h-5 w-5" />
-        <h2 className="text-xl font-bold">Trending on QDev Blog</h2>
+        <h2 className="text-xl font-bold">Trending on JomNum Blog</h2>
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {trendingArticles.map((article, index) => (

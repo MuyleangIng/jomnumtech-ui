@@ -368,7 +368,7 @@ export function Navbar() {
                     {/* Left Side (Logo) */}
                     <Link href="/" className="flex items-center space-x-2">
                         <Webhook className="h-6 w-6" />
-                        <span className="hidden font-bold md:inline-block">QDev Blog</span>
+                        <span className="hidden font-bold md:inline-block">JomNum Blog</span>
                     </Link>
 
                     {/* Search Bar (Visible on Desktop, Hidden on Mobile) */}
