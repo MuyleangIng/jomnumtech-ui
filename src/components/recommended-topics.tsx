@@ -1,5 +1,4 @@
 "use client"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 
@@ -40,26 +39,26 @@ export function RecommendedTopics() {
         <div className="space-y-4">
             <h2 className="text-xl font-bold">Recommended Topics</h2>
             <div className="flex flex-wrap gap-2">
-                {/*{visibleTopics.map((topic) => (*/}
-                {/*    <Button key={topic} variant="secondary" size="sm" className="rounded-full" asChild>*/}
-                {/*        <Link href={`/topic/${String(topic).toLowerCase().replace(/ /g, "-")}`}>*/}
-                {/*            {topic}*/}
-                {/*        </Link>*/}
-                {/*    </Button>*/}
-                {/*))}*/}
+                {visibleTopics.map((topic) => (
+                    <Button key={topic} variant="secondary" size="sm" className="rounded-full" asChild>
+                        {/*<Link href={`/topic/${String(topic).toLowerCase().replace(/ /g, "-")}`}>*/}
+                            {topic}
+                        {/*</Link>*/}
+                    </Button>
+                ))}
             </div>
 
-            {/* Toggle button for "See More" / "See Less" */}
-            {/*{topics.length > 10 && (*/}
-            {/*    <Button*/}
-            {/*        variant="outline"*/}
-            {/*        size="sm"*/}
-            {/*        className="w-full"*/}
-            {/*        onClick={() => setShowAll(!showAll)}*/}
-            {/*    >*/}
-            {/*        {showAll ? "See Less" : "See More"}*/}
-            {/*    </Button>*/}
-            {/*)}*/}
+             Toggle button for "See More" / "See Less"
+            {topics.length > 10 && (
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={() => setShowAll(!showAll)}
+                >
+                    {showAll ? "See Less" : "See More"}
+                </Button>
+            )}
         </div>
     )
 }
