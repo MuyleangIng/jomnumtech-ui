@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
+import Link from "next/link";
 
 export function RecommendedTopics() {
     const [topics, setTopics] = useState<string[]>([])
@@ -41,14 +42,14 @@ export function RecommendedTopics() {
             <div className="flex flex-wrap gap-2">
                 {visibleTopics.map((topic) => (
                     <Button key={topic} variant="secondary" size="sm" className="rounded-full" asChild>
-                        {/*<Link href={`/topic/${String(topic).toLowerCase().replace(/ /g, "-")}`}>*/}
+                        <Link href={`/topic/${String(topic).toLowerCase().replace(/ /g, "-")}`}>
                             {topic}
-                        {/*</Link>*/}
+                        </Link>
                     </Button>
                 ))}
             </div>
 
-             Toggle button for "See More" / "See Less"
+             {/*Toggle button for "See More" / "See Less"*/}
             {topics.length > 10 && (
                 <Button
                     variant="outline"
