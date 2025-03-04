@@ -1,3 +1,4 @@
+"use client"
 import { MarkdownArticleViewer } from "@/components/markdown-article-viewer";
 import { notFound } from "next/navigation";
 
