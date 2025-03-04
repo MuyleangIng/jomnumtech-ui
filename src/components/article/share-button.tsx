@@ -8,15 +8,15 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 
 interface ShareButtonProps {
-  articleId: number
+  articleSlug: string
 }
 
-export function ShareButton({ articleId }: ShareButtonProps) {
+export function ShareButton({ articleSlug }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
 
   const shareUrl = typeof window !== "undefined" 
-    ? `${window.location.origin}/article/${articleId}` 
-    : `/article/${articleId}`
+    ? `${window.location.origin}/article/${articleSlug}` 
+    : `/article/${articleSlug}`
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl)

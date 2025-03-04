@@ -13,6 +13,7 @@ interface ArticleActionsProps {
   articleId: number
   initialLikes: number
   initialBookmarks: number
+  articleSlug: string
 }
 
 interface LikeResponse {
@@ -35,7 +36,7 @@ interface BookmarkResponse {
   }>
 }
 
-export function ArticleActions({ articleId, initialLikes, initialBookmarks }: ArticleActionsProps) {
+export function ArticleActions({ articleId, initialLikes, initialBookmarks,articleSlug }: ArticleActionsProps) {
   const { user, tokens } = useAuth()
   const router = useRouter()
 
@@ -233,7 +234,7 @@ export function ArticleActions({ articleId, initialLikes, initialBookmarks }: Ar
           <span className="text-sm font-medium">{bookmarkCount}</span>
         </Button>
 
-        <ShareButton articleId={articleId} />
+        <ShareButton articleSlug={articleSlug} />
       </div>
   )
 }
