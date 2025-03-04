@@ -16,7 +16,7 @@ import {
   Maximize2,
   MoreVertical,
   Pencil,
-  Trash2
+  Trash2, ChevronUp, ChevronDown
 } from "lucide-react"
 import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
@@ -26,6 +26,9 @@ import {api} from "@/lib/api-public";
 import {Textarea} from "@/components/ui/textarea";
 import {CommentSection} from "@/components/public-articles/CommentSection";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {FollowButton} from "@/components/article/follow-button";
+import {ArticleActions} from "@/components/article/article-actions";
+import {CommentSidebar} from "@/components/public-articles/CommentSidebar";
 
 interface Tag {
   id: number
@@ -78,6 +81,20 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
   const [bookmarkCount, setBookmarkCount] = useState(article.total_bookmarks)
   const [comments, setComments] = useState<Comment[]>([])
   const { user, tokens } = useAuth()
+  const [viewCount, setViewCount] = useState(article.views)
+  const [showAllComments, setShowAllComments] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const visibleComments = showAllComments ? comments : comments.slice(0, 2)
+  const hasMoreComments = comments.length > 2
+
+  const handleShowMore = () => {
+    if (window.innerWidth >= 1024) {
+      // lg breakpoint
+      setSidebarOpen(true)
+    } else {
+      setShowAllComments(true)
+    }
+  }
 
   const [newComment, setNewComment] = useState("")
   useEffect(() => {
@@ -86,6 +103,20 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
     }
   }, [tokens?.access_token]) // Removed unnecessary dependency: article.id
 
+  useEffect(() => {
+    const recordView = async () => {
+      try {
+        await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${article.id}/view`, {
+          method: "POST",
+        })
+        setViewCount((prev) => prev + 1)
+      } catch (error) {
+        console.error("Failed to record view:", error)
+      }
+    }
+
+    recordView()
+  }, [article.id])
   const fetchComments = async () => {
     const response = await api.getComments(article.id, tokens?.access_token)
     if (response.data) {
@@ -184,78 +215,33 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
 
             {/* Author Section */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-              {/* Author Avatar */}
               <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
                 <AvatarImage src={articleAuthor.image} alt={articleAuthor.name} />
-                {/*<AvatarFallback>{article.author.name[0]}</AvatarFallback>*/}
+                <AvatarFallback>{articleAuthor.initials}</AvatarFallback>
               </Avatar>
 
-              {/* Author Info & Actions */}
               <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <Link
-                      href={`/${articleAuthor.username}`}
-                      className="font-medium hover:underline"
-                  >
+                  <Link href={`/${articleAuthor.username}`} className="font-medium hover:underline">
                     {articleAuthor.name}
                   </Link>
-                  <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-6 sm:h-7 rounded-full text-xs"
-                  >
-                    Follow
-                  </Button>
+                  {author && user && author.id !== user.id && <FollowButton userId={author.id} />}
                 </div>
 
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                   <span>{formattedDate}</span>
                   <span>·</span>
-                  <span>{article.views} views</span>
+                  <span>{viewCount} views</span>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
-                <ShareButton article={article} />
-                <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 rounded-full">
-                  <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                  >
-                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3Z"></path>
-                  </svg>
-                </Button>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 sm:h-9 sm:w-9 rounded-full"
-                    onClick={toggleBookmark}
-                >
-                  <Bookmark className={cn("h-5 w-5", bookmarked && "fill-current")} />
-                </Button>
-              </div>
+              <ArticleActions
+                  articleId={article.id}
+                  initialLikes={article.total_likes}
+                  initialBookmarks={article.total_bookmarks}
+              />
             </div>
           </div>
-
-
-          {/* Cover Image */}
-          {/*{article.image_url && (*/}
-          {/*  <Image*/}
-          {/*    src={article.image_url || "/placeholder.svg"}*/}
-          {/*    alt={article.title}*/}
-          {/*    width={1200}*/}
-          {/*    height={600}*/}
-          {/*    className="rounded-lg object-cover"*/}
-          {/*    priority*/}
-          {/*  />*/}
-          {/*)}*/}
 
           {/* Article Content */}
           <div className="prose prose-lg max-w-none font-serif article-content">
@@ -319,32 +305,37 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
 
           {/* Article Actions */}
           <div className="flex items-center justify-between border-y py-4">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" className="gap-2" onClick={toggleLike}>
-                <Heart className={cn("h-5 w-5", liked && "fill-current text-red-500")} />
-                <span>{likeCount}</span>
-              </Button>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <MessageSquare className="h-5 w-5" />
-                <span>{article.total_comments}</span>
-              </Button>
-            </div>
-            <div className="flex items-center gap-2">
-              <ShareButton article={article} />
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={toggleBookmark}>
-                <Bookmark className={cn("h-4 w-4", bookmarked && "fill-current")} />
-              </Button>
-            </div>
+            <ArticleActions
+                articleId={article.id}
+                initialLikes={article.total_likes}
+                initialBookmarks={article.total_bookmarks}
+            />
+            <Button variant="ghost" size="sm" className="gap-2">
+              <MessageSquare className="h-5 w-5" />
+              <span>{article.total_comments}</span>
+            </Button>
+            {/*<div className="flex items-center gap-2">*/}
+            {/*  <ShareButton article={article} />*/}
+            {/*  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={toggleBookmark}>*/}
+            {/*    <Bookmark className={cn("h-4 w-4", bookmarked && "fill-current")} />*/}
+            {/*  </Button>*/}
+            {/*</div>*/}
           </div>
-          {/*<CommentSection articleId={article.id} />*/}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Comments</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">Comments ({comments.length})</h2>
+              {hasMoreComments && !showAllComments && (
+                  <Button variant="ghost" onClick={handleShowMore} className="text-sm">
+                    See all comments
+                  </Button>
+              )}
+            </div>
 
             {user ? (
                 <div className="flex items-start gap-4">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={user.profile_image} alt={user.profile_image} />
-                    {/*<AvatarFallback>{user.name?.[0]}</AvatarFallback>*/}
+                    <AvatarFallback>{user.username?.[0]}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <Textarea
@@ -361,7 +352,7 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
             )}
 
             <div className="space-y-6">
-              {comments.map((comment) => (
+              {visibleComments.map((comment) => (
                   <CommentItem
                       key={comment.id}
                       comment={comment}
@@ -370,8 +361,66 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
                       token={tokens?.access_token}
                   />
               ))}
+
+              {hasMoreComments && showAllComments && (
+                  <Button variant="ghost" onClick={() => setShowAllComments(false)} className="w-full text-sm">
+                    <ChevronUp className="mr-2 h-4 w-4" />
+                    Show less
+                  </Button>
+              )}
+
+              {hasMoreComments && !showAllComments && !sidebarOpen && (
+                  <Button variant="ghost" onClick={handleShowMore} className="w-full text-sm">
+                    <ChevronDown className="mr-2 h-4 w-4" />
+                    Show {comments.length - 2} more comments
+                  </Button>
+              )}
             </div>
+
+            <CommentSidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                comments={comments}
+                currentUser={user}
+                token={tokens?.access_token}
+                onUpdate={fetchComments}
+            />
           </div>
+          {/*<div className="space-y-6">*/}
+          {/*  <h2 className="text-2xl font-bold">Comments</h2>*/}
+
+          {/*  {user ? (*/}
+          {/*      <div className="flex items-start gap-4">*/}
+          {/*        <Avatar className="h-10 w-10">*/}
+          {/*          <AvatarImage src={user.image} alt={user.name} />*/}
+          {/*          <AvatarFallback>{user.name?.[0]}</AvatarFallback>*/}
+          {/*        </Avatar>*/}
+          {/*        <div className="flex-1">*/}
+          {/*          <Textarea*/}
+          {/*              placeholder="Add a comment..."*/}
+          {/*              value={newComment}*/}
+          {/*              onChange={(e) => setNewComment(e.target.value)}*/}
+          {/*              className="mb-2"*/}
+          {/*          />*/}
+          {/*          <Button onClick={handleAddComment}>Post Comment</Button>*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*  ) : (*/}
+          {/*      <p className="text-muted-foreground">Please log in to comment.</p>*/}
+          {/*  )}*/}
+
+          {/*  <div className="space-y-6 max-h-[600px] overflow-y-auto">*/}
+          {/*    {comments.map((comment) => (*/}
+          {/*        <CommentItem*/}
+          {/*            key={comment.id}*/}
+          {/*            comment={comment}*/}
+          {/*            onUpdate={fetchComments}*/}
+          {/*            currentUser={user}*/}
+          {/*            token={tokens?.access}*/}
+          {/*        />*/}
+          {/*    ))}*/}
+          {/*  </div>*/}
+          {/*</div>*/}
 
           {/* Author Info */}
           {articleAuthor && (
@@ -404,17 +453,26 @@ interface CommentItemProps {
   currentUser: any
   token?: string
   level?: number
-  profile_image: string
 }
 
-function CommentItem({ comment, onUpdate, currentUser, token, level = 0 }: CommentItemProps) {
+interface Comment {
+  id: number
+  content: string
+  author: string
+  created_at: string
+  profile_image: string
+  replies: Comment[]
+}
+
+export function CommentItem({ comment, onUpdate, currentUser, token, level = 0 }: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editContent, setEditContent] = useState(comment.content)
   const [showReplyInput, setShowReplyInput] = useState(false)
   const [replyContent, setReplyContent] = useState("")
+  const [showAllReplies, setShowAllReplies] = useState(false)
   const isAuthor = currentUser?.username === comment.author
   const canReply = level < 1 // Only allow replies for top-level comments
-  console.log("commet", comment)
+
   const handleEdit = async () => {
     if (!token) return
 
@@ -445,13 +503,14 @@ function CommentItem({ comment, onUpdate, currentUser, token, level = 0 }: Comme
     }
   }
 
+  const visibleReplies = showAllReplies ? comment.replies : comment.replies.slice(0, 1)
+  const hasMoreReplies = comment.replies.length > 1
+
   return (
       <div className="group">
         <div className="flex items-start gap-4">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={comment.profile_image} alt={comment.profile_image} />
-
-            {/*<AvatarImage src={`/placeholder.svg?text=${comment.profile_image}`} alt={comment.author} />*/}
+            <AvatarImage src={comment.profile_image} alt={comment.author} />
             <AvatarFallback>{comment.author[0]}</AvatarFallback>
           </Avatar>
 
@@ -534,7 +593,7 @@ function CommentItem({ comment, onUpdate, currentUser, token, level = 0 }: Comme
 
         {comment.replies && comment.replies.length > 0 && (
             <div className="ml-12 mt-4 space-y-4">
-              {comment.replies.map((reply) => (
+              {visibleReplies.map((reply) => (
                   <CommentItem
                       key={reply.id}
                       comment={reply}
@@ -544,11 +603,27 @@ function CommentItem({ comment, onUpdate, currentUser, token, level = 0 }: Comme
                       level={level + 1}
                   />
               ))}
+              {hasMoreReplies && (
+                  <Button variant="ghost" onClick={() => setShowAllReplies(!showAllReplies)} className="text-sm">
+                    {showAllReplies ? (
+                        <>
+                          <ChevronUp className="mr-2 h-4 w-4" />
+                          Hide replies
+                        </>
+                    ) : (
+                        <>
+                          <ChevronDown className="mr-2 h-4 w-4" />
+                          Show {comment.replies.length - 2} more {comment.replies.length - 2 === 1 ? "reply" : "replies"}
+                        </>
+                    )}
+                  </Button>
+              )}
             </div>
         )}
       </div>
   )
 }
+
 
 
 function CodeBlock({ code, language = "text" }: { code: string; language: string }) {
