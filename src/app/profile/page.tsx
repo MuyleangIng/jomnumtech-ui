@@ -54,6 +54,7 @@ export interface User {
 }
 
 export interface Article {
+  slug: string
   id: number
   title: string
   subtitle: string
@@ -502,7 +503,7 @@ export default function ProfilePage() {
                         >
                           <div className="flex justify-between items-start">
                             <div className="space-y-2">
-                              <Link href={`/article/${article.id}`}>
+                              <Link href={`/article/${article.slug}`}>
                                 <h2 className="text-xl font-bold hover:underline">{article.title}</h2>
                               </Link>
                               <p className="text-muted-foreground">{article.subtitle}</p>
