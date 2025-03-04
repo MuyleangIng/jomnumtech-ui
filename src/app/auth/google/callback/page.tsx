@@ -33,8 +33,8 @@ export default function GoogleCallback() {
     if (code) {
       console.log("Google OAuth Code:", code);
 
-      // fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/google`, {
-      fetch("https://jomnumtech-api.shinoshike.studio/auth/google",{
+      fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/google`, {
+      // fetch("https://jomnumtech-api.shinoshike.studio/auth/google",{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
