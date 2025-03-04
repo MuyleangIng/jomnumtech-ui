@@ -40,6 +40,12 @@ const nextConfig = {
             }
         ],
     },
+    webpack: (config, { isServer }) => {
+        if (isServer) {
+            config.externals = [...config.externals, 'document'];
+        }
+        return config;
+    },
     reactStrictMode: true,
     typescript: {
         // !! WARN !!
