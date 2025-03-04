@@ -25,20 +25,20 @@
 //         address: false,
 //         telephone: false,
 //     },
-//     metadataBase: new URL("http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png"),
+//     metadataBase: new URL("https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg"),
 //     alternates: {
 //         canonical: "/",
 //     },
 //     openGraph: {
 //         type: "website",
 //         locale: "en_US",
-//         url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
+//         url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
 //         title: "JomNum Blog | Where good ideas find you",
 //         description: "Discover stories, thinking, and expertise from writers on any topic.",
 //         siteName: "JomNum Blog",
 //         images: [
 //             {
-//                 url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
+//                 url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
 //                 width: 1200,
 //                 height: 630,
 //                 alt: "JomNum Blog",
@@ -124,20 +124,20 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
-    metadataBase: new URL("http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png"),
+    metadataBase: new URL("https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg"),
     alternates: {
         canonical: "/",
     },
     openGraph: {
         type: "website",
         locale: "en_US",
-        url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
+        url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
         title: "JomNum Blog | Where good ideas find you",
         description: "Discover stories, thinking, and expertise from writers on any topic.",
         siteName: "JomNum Blog",
         images: [
             {
-                url: "http://136.228.158.126:3034/uploads/bfe03df5-dce7-4c31-a6ca-c5ea45ca182a.png",
+                url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
                 width: 1200,
                 height: 630,
                 alt: "JomNum Blog",
