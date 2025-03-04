@@ -236,6 +236,7 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
               </div>
 
               <ArticleActions
+                  articleSlug={article.slug}
                   articleId={article.id}
                   initialLikes={article.total_likes}
                   initialBookmarks={article.total_bookmarks}

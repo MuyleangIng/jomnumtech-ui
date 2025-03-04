@@ -367,7 +367,12 @@ export function Navbar() {
 
                     {/* Left Side (Logo) */}
                     <Link href="/" className="flex items-center space-x-2">
-                        <Webhook className="h-6 w-6" />
+                        <Image src="/jom.png" alt={"jomnumtech-logo"} className="h-8 w-8"
+                            width={100}
+                               height={100}
+                        />
+                        {/*<span className="hidden font-bold md:inline-block text-[rgb(10,61,243)]">JomNum Blog</span>*/}
+
                         <span className="hidden font-bold md:inline-block">JomNum Blog</span>
                     </Link>
 
