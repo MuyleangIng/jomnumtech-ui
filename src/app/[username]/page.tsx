@@ -71,7 +71,7 @@ interface Article {
 // Fetch user data by username
 async function getUserByUsername(username: string): Promise<User | null> {
     try {
-        const response = await fetch(`https://jomnumtech-api.shinoshike.studio/users/${username}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/${username}`, {
             method: "GET",
         })
         console.log("response",response)
@@ -90,7 +90,7 @@ async function getUserByUsername(username: string): Promise<User | null> {
 }
 //
 async function getFollowerByUsername(username: string): Promise<Follower[]> {    try {
-        const response = await fetch(`https://jomnumtech-api.shinoshike.studio/users/${username}/followers`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/${username}/followers`, {
             method: "GET",
         })
         console.log("response",response)
@@ -110,7 +110,7 @@ async function getFollowerByUsername(username: string): Promise<Follower[]> {   
 // Fetch user's public articles
 async function getUserArticles(username: string): Promise<Article[]> {
     try {
-        const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/user/${username}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/user/${username}`, {
             method: "GET",
             redirect: "follow",
             // next: { revalidate: 3600 }, // Revalidate every hour

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         const authHeader = request.headers.get("Authorization")
 
         // Forward the request to your backend
-        const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}/`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${id}/`, {
             method: "GET",
             headers: authHeader
                 ? {
@@ -41,7 +41,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         }
 
         // Forward the request to your backend
-        const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}/`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${id}/`, {
             method: "PUT",
             headers: {
                 Authorization: authHeader,
@@ -73,7 +73,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
         }
 
         // Forward the request to your backend
-        const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}/`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${id}/`, {
             method: "DELETE",
             headers: {
                 Authorization: authHeader,

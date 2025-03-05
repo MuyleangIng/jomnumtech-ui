@@ -17,7 +17,7 @@ export const FollowButton = ({ userId }: { userId: number }) => {
     useEffect(() => {
         if (!tokens?.access_token) return
 
-        fetch(`https://jomnumtech-api.shinoshike.studio/users/${userId}/is-following`, {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/${userId}/is-following`, {
             method: "GET",
             headers: { Authorization: `Bearer ${tokens.access_token}` }
         })
@@ -38,7 +38,7 @@ export const FollowButton = ({ userId }: { userId: number }) => {
         const action = isFollowing ? "unfollow" : "follow"
 
         try {
-            const response = await fetch(`https://jomnumtech-api.shinoshike.studio/users/${userId}/${action}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/${userId}/${action}`, {
                 method,
                 headers: { Authorization: `Bearer ${tokens.access_token}` },
             })

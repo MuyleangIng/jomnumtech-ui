@@ -12,7 +12,7 @@ export async function updateArticle(id: number, article: Partial<Article>, token
   try {
     console.log(`Updating article with ID: ${id}`)
 
-    const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ export async function deleteArticle(id: number, token: string): Promise<boolean>
   }
 
   try {
-    const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -122,7 +122,7 @@ export async function deleteArticle(id: number, token: string): Promise<boolean>
 
 export async function fetchCategories(): Promise<string[]> {
   try {
-    const response = await fetch("https://jomnumtech-api.shinoshike.studio/categories/", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/categories/`, {
       method: "GET",
     })
 
@@ -140,7 +140,7 @@ export async function fetchCategories(): Promise<string[]> {
 
 export async function fetchTags(): Promise<string[]> {
   try {
-    const response = await fetch("https://jomnumtech-api.shinoshike.studio/tags/", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/tags/`, {
       method: "GET",
     })
 
@@ -170,7 +170,7 @@ export async function fetchMyArticles(token: string): Promise<Article[]> {
   try {
     console.log(`Fetching articles with token: ${token}`);
 
-    const response = await fetch("https://jomnumtech-api.shinoshike.studio/articles/my", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/my`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`, // ✅ Use dynamic token
@@ -212,7 +212,7 @@ export async function updateUser(token: string, userData: Partial<User>): Promis
   try {
     console.log(`Updating user with token: ${token}`)
 
-    const response = await fetch("https://jomnumtech-api.shinoshike.studio/auth/profile", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/profile`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

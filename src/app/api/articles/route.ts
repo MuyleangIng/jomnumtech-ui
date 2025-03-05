@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Forward the request to your backend
-        const response = await fetch("https://jomnumtech-api.shinoshike.studio/articles/", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/`, {
             method: "POST",
             headers: {
                 Authorization: authHeader,

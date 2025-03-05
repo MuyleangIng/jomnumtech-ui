@@ -90,7 +90,7 @@ const getArticleData = async (slug: string) => {
   }
 
   try {
-    const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/slug/${slug}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/slug/${slug}`, {
       method: "GET",
       headers: headers,
     })
@@ -129,7 +129,7 @@ const getArticleData = async (slug: string) => {
 const getAuthorData = async (username: string) => {
   console.log(username)
   try {
-    const response = await fetch(`https://jomnumtech-api.shinoshike.studio/users/${username}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/${username}`, {
       method: "GET",
       redirect: "follow",
     })

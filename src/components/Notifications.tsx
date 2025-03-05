@@ -38,7 +38,7 @@ export function Notifications() {
     setError(null)
 
     try {
-      const response = await fetch("https://jomnumtech-api.shinoshike.studio/notifications", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/notifications`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${tokens.access_token}`,
@@ -130,7 +130,7 @@ export function Notifications() {
     if (!tokens) return
 
     try {
-      const response = await fetch(`https://jomnumtech-api.shinoshike.studio/notifications/${id}/read`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/notifications/${id}/read`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${tokens.access_token}`,
