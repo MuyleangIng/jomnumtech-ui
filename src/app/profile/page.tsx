@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { type ChangeEvent, useEffect, useState } from "react"
+import { type ChangeEvent, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Edit, Settings, Upload, ZoomIn, ZoomOut, Camera, X } from "lucide-react"
 import { useAuth } from "@/components/auth/AuthContext"
 import { redirect } from "next/navigation"
-import {fetchMyArticles, uploadImage, updateUser as updateUserService, deleteArticle} from "@/lib/api"
+import { uploadImage, updateUser as updateUserService} from "@/lib/api"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import {
   Dialog,
@@ -27,6 +27,10 @@ import { Slider } from "@/components/ui/slider"
 import { toast } from "@/components/ui/use-toast"
 import Cropper from "react-easy-crop"
 import type { Area } from "react-easy-crop/types"
+import {useToggleVisibility} from "@/hook/aritcles/useToggleVisibility";
+import {useFetchMyArticles} from "@/hook/aritcles/useFetchMyArticles";
+import {useDeleteArticle} from "@/hook/aritcles/useDeleteArticle";
+import {formatDate, calculateReadTime} from "@/lib/utils";
 
 declare global {
   interface Window {
@@ -80,15 +84,13 @@ type AuthTokens = {
 
 export default function ProfilePage() {
   const { user, tokens, updateUser: setUser } = useAuth()
-  const [loadingArticle, setLoadingArticle] = useState<number | null>(null)
-  const [articles, setArticles] = useState<Article[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const { articles, loadingArticles, error, updateArticleVisibility, setArticles } = useFetchMyArticles()
+  const { toggleVisibility, loadingArticle } = useToggleVisibility()
   const [coverImage, setCoverImage] = useState(user?.cover_image || "/placeholder.svg?height=300&width=1200")
   const [profileImage, setProfileImage] = useState(user?.profile_image || "/default-avatar.png")
   const [loading, setLoading] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Partial<User>>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Image cropping state
   const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -97,8 +99,6 @@ export default function ProfilePage() {
   const [imageSrc, setImageSrc] = useState<string | null>(null)
   const [cropperOpen, setCropperOpen] = useState(false)
   const [uploadType, setUploadType] = useState<"profile" | "cover">("profile")
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [articleToDelete, setArticleToDelete] = useState<Article | null>(null)
   // Handle file input for both profile and cover images
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>, type: "profile" | "cover") => {
     const file = event.target.files?.[0]
@@ -115,34 +115,22 @@ export default function ProfilePage() {
       setZoom(1)
     }
   }
-  const handleDeleteArticle = async () => {
-    if (!articleToDelete || !tokens?.access_token) return
+  const { deleteArticle, isDeleting } = useDeleteArticle()
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [articleToDelete, setArticleToDelete] = useState<Article | null>(null)
+  const [inputValue, setInputValue] = useState("")
+  const isConfirmDisabled = inputValue !== "DELETE" // ✅ Disable button unless correct input
 
-    setIsSubmitting(true)
-    try {
-      const success = await deleteArticle(articleToDelete.id, tokens.access_token)
-      if (success) {
-        setArticles(articles.filter((article) => article.id !== articleToDelete.id))
-        toast({
-          title: "Article deleted",
-          description: "Your article has been successfully deleted.",
-        })
-      } else {
-        throw new Error("Failed to delete article")
-      }
-    } catch (error) {
-      console.error("Error deleting article:", error)
-      toast({
-        title: "Delete failed",
-        description: "There was an error deleting your article. Please try again.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false)
-      setDeleteDialogOpen(false)
-      setArticleToDelete(null)
+  const confirmDelete = async () => {
+    if (!articleToDelete) return
+
+    const success = await deleteArticle(articleToDelete.id)
+    if (success) {
+      setArticles((prevArticles) => prevArticles.filter((article) => article.id !== articleToDelete.id))
+      setDeleteDialogOpen(false) // Close the dialog after successful deletion
     }
   }
+
   // Handle crop complete
   const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
@@ -244,46 +232,6 @@ export default function ProfilePage() {
       setLoading(false)
     }
   }
-
-  // Toggle article visibility (public/private)
-  const handleToggleVisibility = async (articleId: number, isPublic: boolean) => {
-    if (!tokens?.access_token) {
-      console.error("No authentication token provided")
-      return
-    }
-
-    setLoadingArticle(articleId) // Show loading state for this article
-
-    try {
-      const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${articleId}/visibility`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${tokens.access_token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ is_public: !isPublic }),
-      })
-
-      if (!response.ok) {
-        throw new Error(`Failed to update visibility: ${response.statusText}`)
-      }
-
-      // Update local state to reflect the change
-      setArticles(
-          articles.map((article) => (article.id === articleId ? { ...article, is_public: !isPublic } : article)),
-      )
-    } catch (error) {
-      console.error("Error updating article visibility:", error)
-      toast({
-        title: "Update failed",
-        description: "There was an error updating the article visibility. Please try again.",
-        variant: "destructive",
-      })
-    } finally {
-      setLoadingArticle(null)
-    }
-  }
-
   const updateProfile = async (updatedFields: Partial<User>) => {
     if (!tokens?.access_token) {
       console.error("No authentication token provided")
@@ -345,43 +293,11 @@ export default function ProfilePage() {
     await updateProfile(editedUser)
   }
 
-  useEffect(() => {
-    async function loadArticles() {
-      if (tokens?.access_token) {
-        try {
-          const fetchedArticles = await fetchMyArticles(tokens.access_token)
-          setArticles(fetchedArticles)
-        } catch (error) {
-          console.error("Failed to fetch articles:", error)
-        } finally {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    loadArticles()
-  }, [tokens?.access_token])
-
   if (!user) {
     redirect("/")
   }
 
-  // Format date for display
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
 
-  // Calculate read time (roughly 200 words per minute)
-  const calculateReadTime = (content: string) => {
-    const wordCount = content.split(/\s+/).length
-    const readTime = Math.ceil(wordCount / 200)
-    return `${readTime} min read`
-  }
 
   return (
       <div>
@@ -493,9 +409,9 @@ export default function ProfilePage() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="articles" className="mt-6 space-y-8">
-                {isLoading ? (
+                {articles.length === 0 ? (
                     <div className="text-center py-8">Loading articles...</div>
-                ) : articles.length > 0 ? (
+                ) : (
                     articles.map((article) => (
                         <article
                             key={article.id}
@@ -548,11 +464,26 @@ export default function ProfilePage() {
                                     <span>Edit Article</span>
                                   </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => handleToggleVisibility(article.id, article.is_public)}
-                                    className="flex items-center cursor-pointer"
-                                >
-                                  {article.is_public ? (
+
+                                {/* TODO : Handle toggle visibility*/}
+                                <DropdownMenuItem onClick={() => toggleVisibility(article.id, article.is_public, updateArticleVisibility)} className="flex items-center cursor-pointer" disabled={loadingArticle === article.id}>
+                                  {loadingArticle === article.id ? (
+                                      <>
+                                        <svg
+                                            className="animate-spin mr-2 h-4 w-4 text-gray-500"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                          <path
+                                              fill="currentColor"
+                                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                          ></path>
+                                        </svg>
+                                        <span>Updating...</span>
+                                      </>
+                                  ) : article.is_public ? (
                                       <>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -564,7 +495,7 @@ export default function ProfilePage() {
                                             strokeWidth="2"
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
-                                            className="mr-2 h-4 w-4"
+                                            className="mr-2 h-4 w-4 text-green-500"
                                         >
                                           <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                                           <circle cx="12" cy="12" r="3" />
@@ -583,7 +514,7 @@ export default function ProfilePage() {
                                             strokeWidth="2"
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
-                                            className="mr-2 h-4 w-4"
+                                            className="mr-2 h-4 w-4 text-gray-500"
                                         >
                                           <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
                                           <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
@@ -594,6 +525,8 @@ export default function ProfilePage() {
                                       </>
                                   )}
                                 </DropdownMenuItem>
+                                {/* TODO : Close Handle toggle visibility*/}
+
                                 <DropdownMenuItem asChild>
                                   <Link href={`/article/${article.id}/stats`} className="flex items-center cursor-pointer">
                                     <svg
@@ -691,8 +624,6 @@ export default function ProfilePage() {
                         </article>
                     ))
 
-                ) : (
-                    <div className="text-center py-8">No articles found. Start writing your first article!</div>
                 )}
               </TabsContent>
               <TabsContent value="about" className="mt-6">
@@ -711,23 +642,38 @@ export default function ProfilePage() {
           </div>
         </div>
         <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Delete Article</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this article? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleDeleteArticle} disabled={isSubmitting}>
-              {isSubmitting ? "Deleting..." : "Delete"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle className="text-red-500">Delete Article</DialogTitle>
+              <p className="text-muted-foreground">
+                ⚠️ This action **cannot be undone**. Type <strong>&#34;DELETE&#34;</strong> in the box below to confirm.
+              </p>
+            </DialogHeader>
+
+            {/* User input confirmation */}
+            <div className="mt-4">
+              <Input
+                  placeholder="Type DELETE to confirm"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="w-full"
+              />
+            </div>
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                  variant="destructive"
+                  onClick={confirmDelete}
+                  disabled={isConfirmDisabled || isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         {/* Edit Profile Dialog */}
         <Dialog open={isEditing} onOpenChange={setIsEditing}>
           <DialogContent className="sm:max-w-[600px]">

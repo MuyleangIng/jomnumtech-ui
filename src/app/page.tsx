@@ -1,12 +1,10 @@
 import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { FeaturedArticles } from "@/components/featured-articles"
 import { TrendingArticles } from "@/components/trending-articles"
 import { RecommendedTopics } from "@/components/recommended-topics"
 import { WhoToFollow } from "@/components/who-to-follow"
-// import Lottie from "lottie-react";
-// import animationData from "../../public/lotties/article.json";
+import LottieHomePage from "@/app/login/LottieHomePage";
 export default function Home() {
   return (
       <div className="flex flex-col">
@@ -19,9 +17,11 @@ export default function Home() {
                 Discover stories, thinking, and expertise from writers on any topic.
               </p>
               <div className="mt-4">
-                <Button size="lg" className="rounded-full px-8">
-                  Start reading
-                </Button>
+                <Link href="/login">
+                  <Button size="lg" className="rounded-full px-8">
+                    Start reading
+                  </Button>
+                </Link>
               </div>
             </div>
             {/*<div className="hidden md:block">*/}
@@ -31,16 +31,17 @@ export default function Home() {
             {/*      className="w-[500px] h-[400px] rounded-lg"*/}
             {/*  />*/}
             {/*</div>*/}
-            <div className="hidden md:block">
-              <Image
-                  src="/placeholder.svg?height=400&width=500"
-                  alt="Hero image"
-                  width={500}
-                  height={400}
-                  className="rounded-lg object-cover"
-                  priority
-              />
-            </div>
+            <LottieHomePage/>
+            {/*<div className="hidden md:block">*/}
+            {/*  <Image*/}
+            {/*      src="/placeholder.svg?height=400&width=500"*/}
+            {/*      alt="Hero image"*/}
+            {/*      width={500}*/}
+            {/*      height={400}*/}
+            {/*      className="rounded-lg object-cover"*/}
+            {/*      priority*/}
+            {/*  />*/}
+            {/*</div>*/}
           </div>
         </section>
 

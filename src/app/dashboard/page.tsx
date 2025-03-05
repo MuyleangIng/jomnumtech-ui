@@ -1,14 +1,17 @@
 "use client"
-import {useAuth} from "@/components/auth/AuthContext";
+import {useFetchProfile} from "@/hook/useFetchProfile";
+export default function DashboardPage() {
+    const { profile, loading, error } = useFetchProfile()
 
-export default  function DashboardPage() {
-    const { user } = useAuth();
-    console.log(user);
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Welcome to your Dashboard</h1>
-      <p>You are logged in as: {user?.email || user?.username}</p>
-    </div>
-  )
+    if (loading) return <p>Loading profile...</p>
+    if (error) return <p>Error: {error}</p>
+
+    return (
+        <div>
+            <h2>Welcome, {profile?.username}!</h2>
+            <p>Email: {profile?.email}</p>
+            <p>Bio: {profile?.bio || "No bio available"}</p>
+        </div>
+    )
 }
 
