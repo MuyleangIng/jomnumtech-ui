@@ -469,7 +469,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: numb
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 // import { Bold, Italic, List, ListOrdered, ImageIcon, LinkIcon, Quote, Heading1, Heading2 } from "lucide-react"
 // import ReactMarkdown from "react-markdown"
-// import { updateArticle, uploadImage, getArticle } from "@/lib/api"
+// import { useUpdateArticle, uploadImage, getArticle } from "@/lib/api"
 // import { useToast } from "@/components/ui/use-toast"
 // import Image from "next/image"
 // import ImagePreviewDialog from "@/components/image-preview-dialog"
@@ -596,7 +596,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: numb
 //                 tag_ids: selectedTags,
 //             }
 //
-//             await updateArticle(Number.parseInt(id), articleData, tokens.access_token)
+//             await useUpdateArticle(Number.parseInt(id), articleData, tokens.access_token)
 //
 //             toast({
 //                 title: "Article updated successfully",

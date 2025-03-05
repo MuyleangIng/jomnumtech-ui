@@ -91,6 +91,7 @@ import Link from "next/link"
 import { TrendingUp } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
+import {Article} from "@/types/article";
 
 export function TrendingArticles() {
   const [trendingArticles, setTrendingArticles] = useState([])
@@ -104,7 +105,7 @@ export function TrendingArticles() {
 
         // ✅ Sort articles based on views, likes, and comments (descending order)
         const sortedArticles = data.sort(
-            (a: any, b: any) =>
+            (a: number, b: number) =>
                 b.views + b.total_likes + b.total_comments - (a.views + a.total_likes + a.total_comments)
         )
 

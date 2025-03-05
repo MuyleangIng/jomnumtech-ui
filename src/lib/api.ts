@@ -244,20 +244,3 @@ export async function updateUser(token: string, userData: Partial<User>): Promis
   }
 }
 
-// export async function getArticle(id: string, token?: string) {
-//   const headers: HeadersInit = {}
-//   if (token) {
-//     headers["Authorization"] = `Bearer ${token}`
-//   }
-//
-//   const response = await fetch(`/api/articles/${id}`, {
-//     headers,
-//   })
-//
-//   if (!response.ok) {
-//     throw new Error(`Failed to fetch article: ${response.statusText}`)
-//   }
-//
-//   return response.json()
-// }
-

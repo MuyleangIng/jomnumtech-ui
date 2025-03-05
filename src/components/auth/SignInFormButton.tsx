@@ -4,10 +4,8 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { ChromeIcon as Google } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import { useAuth } from "@/components/auth/AuthContext"
 
@@ -15,8 +13,8 @@ interface SignInFormProps {
     onSuccess?: () => void
 }
 
-export function SignInForm({ onSuccess }: SignInFormProps) {
-    const [identifier, setIdentifier] = useState("") // Can be email or username
+export function SignInFormButton({ onSuccess }: SignInFormProps) {
+    const [identifier, setIdentifier] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
@@ -31,22 +29,22 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include", // ✅ Important for cookies
+                credentials: "include",
                 body: JSON.stringify({
                     identifier,
-                    password : "NewSecurePass123!"
+                    password,
                 }),
             })
 
             const data = await response.json()
-            console.log("form simple login",data)
             if (response.ok) {
-                setAuthState(data.user, { access_token: data.access_token,refresh_token: data.refresh_token, token_type: "bearer" })
+                setAuthState(data.user, {
+                    access_token: data.access_token,
+                    refresh_token: data.refresh_token,
+                    token_type: "bearer",
+                })
                 toast({ title: "Success!", description: "You have been signed in." })
-
-                // ✅ Close the dialog by calling onSuccess()
                 if (onSuccess) onSuccess()
-
                 router.push("/profile")
             } else {
                 throw new Error(data.detail || "Failed to sign in")
@@ -57,6 +55,7 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
             setIsLoading(false)
         }
     }
+
     const handleGoogleSignIn = () => {
         const clientId = "864319511903-9ppi277qfje6aa3nt2obh0d1tohlro2m.apps.googleusercontent.com"
         const redirectUri = `${window.location.origin}/auth/google/callback`
@@ -77,7 +76,7 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
         <div className="space-y-6">
             <form onSubmit={handleEmailSignIn} className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="identifier">Email or Username</Label>
+                    <p className="text-sm text-muted-foreground">Email or Username</p>
                     <Input
                         id="identifier"
                         type="text"
@@ -85,20 +84,22 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
                         onChange={(e) => setIdentifier(e.target.value)}
                         placeholder="Enter your email or username"
                         required
+                        className="border-0 bg-gray-50 h-11 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <p className="text-sm text-muted-foreground">Password</p>
                     <Input
                         id="password"
                         type="password"
-                        value="NewSecurePass123!"
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter your password"
                         required
+                        className="border-0 bg-gray-50 h-11 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button type="submit" className="w-full h-11 bg-[#0F172A] hover:bg-[#1E293B] text-white" disabled={isLoading}>
                     {isLoading ? "Signing in..." : "Sign in with email"}
                 </Button>
             </form>
@@ -108,14 +109,19 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
                     <span className="w-full border-t" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                    <span className="bg-background px-2 text-muted-foreground">OR CONTINUE WITH</span>
                 </div>
             </div>
 
-            <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
-                <Google className="mr-2 h-4 w-4" />
+            <Button
+                variant="outline"
+                className="w-full h-11 border-2 hover:bg-gray-50 font-medium"
+                onClick={handleGoogleSignIn}
+            >
+                <Google className="mr-2 h-5 w-5" />
                 Sign in with Google
             </Button>
         </div>
     )
 }
+
