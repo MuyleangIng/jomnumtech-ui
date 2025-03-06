@@ -20,18 +20,25 @@ export async function POST(request: Request) {
             }),
         })
 
-        const data = await response.text()
-        const parsedData = data ? JSON.parse(data) : {}
+        // Try to parse the response as JSON
+        let data
+        const responseText = await response.text()
+        try {
+            data = JSON.parse(responseText)
+        } catch (e) {
+            // If parsing fails, use the raw text
+            data = { message: responseText }
+        }
 
         // Handle error responses from the backend
         if (!response.ok) {
             return NextResponse.json(
-                { message: parsedData.error || "Failed to resend verification email" },
+                { message: data.error || "Failed to resend verification code" },
                 { status: response.status },
             )
         }
 
-        return NextResponse.json({ message: "Verification email sent successfully" }, { status: 200 })
+        return NextResponse.json({ message: "Verification code sent successfully" }, { status: 200 })
     } catch (error) {
         console.error("Resend verification error:", error)
         return NextResponse.json({ message: "Internal server error" }, { status: 500 })

@@ -5,7 +5,6 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Facebook, Mail, AlertCircle, Loader2 } from "lucide-react"
-import { signIn } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,7 +12,11 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
-export function SignUpForm() {
+interface SignUpFormProps {
+  onSuccess?: () => void
+}
+
+export function SignUpForm({ onSuccess }: SignUpFormProps) {
   const [isEmailForm, setIsEmailForm] = useState(false)
   const [username, setUsername] = useState("")
   // const [name, setName] = useState("")
@@ -105,11 +108,14 @@ export function SignUpForm() {
 
       toast({
         title: "Account created!",
-        description: "Please check your email to verify your account",
+        description: "Please verify your email with the code we sent you",
       })
+      // When create success it will close dialog
+      if (onSuccess) onSuccess()
 
       // Redirect to verification page
       router.push(`/register/success?email=${encodeURIComponent(email)}`)
+      // router.push(`/register/success?email=${encodeURIComponent(email)}`)
     } catch (error) {
       toast({
         title: "Error creating account",
@@ -122,9 +128,20 @@ export function SignUpForm() {
     }
   }
 
-  const handleProviderSignUp = (provider: string) => {
-    // Use NextAuth signIn for OAuth providers
-    signIn(provider, { callbackUrl: "/" })
+  const handleGoogleSignIn = () => {
+    const clientId = "864319511903-9ppi277qfje6aa3nt2obh0d1tohlro2m.apps.googleusercontent.com"
+    const redirectUri = `${window.location.origin}/auth/google/callback`
+    const scope = "openid email profile"
+
+    const googleAuthUrl =
+        `https://accounts.google.com/o/oauth2/v2/auth?` +
+        `client_id=${encodeURIComponent(clientId!)}&` +
+        `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+        `response_type=code&` +
+        `scope=${encodeURIComponent(scope)}&` +
+        `access_type=offline`
+
+    window.location.href = googleAuthUrl
   }
 
   if (isEmailForm) {
@@ -226,7 +243,7 @@ export function SignUpForm() {
         <Button
             variant="outline"
             className="flex items-center justify-center gap-2"
-            onClick={() => handleProviderSignUp("google")}
+            onClick={handleGoogleSignIn}
         >
           <svg viewBox="0 0 24 24" width="16" height="16">
             <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
@@ -254,7 +271,8 @@ export function SignUpForm() {
         <Button
             variant="outline"
             className="flex items-center justify-center gap-2"
-            onClick={() => handleProviderSignUp("facebook")}
+            // onClick={() => handleProviderSignUp("facebook")}
+            disabled
         >
           <Facebook className="h-4 w-4 text-blue-600" />
           Sign up with Facebook

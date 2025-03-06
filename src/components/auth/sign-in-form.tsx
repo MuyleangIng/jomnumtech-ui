@@ -34,7 +34,7 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
                 credentials: "include", // ✅ Important for cookies
                 body: JSON.stringify({
                     identifier,
-                    password : "NewSecurePass123!"
+                    password
                 }),
             })
 
@@ -92,7 +92,7 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
                     <Input
                         id="password"
                         type="password"
-                        value="NewSecurePass123!"
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter your password"
                         required

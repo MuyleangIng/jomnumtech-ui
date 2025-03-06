@@ -21,12 +21,19 @@ export async function POST(request: Request) {
             }),
         })
 
-        const data = await response.text()
-        const parsedData = data ? JSON.parse(data) : {}
+        // Try to parse the response as JSON
+        let data
+        const responseText = await response.text()
+        try {
+            data = JSON.parse(responseText)
+        } catch (e) {
+            // If parsing fails, use the raw text
+            data = { message: responseText }
+        }
 
         // Handle error responses from the backend
         if (!response.ok) {
-            return NextResponse.json({ message: parsedData.error || "Verification failed" }, { status: response.status })
+            return NextResponse.json({ message: data.error || "Invalid verification code" }, { status: response.status })
         }
 
         return NextResponse.json({ message: "Email verified successfully" }, { status: 200 })
