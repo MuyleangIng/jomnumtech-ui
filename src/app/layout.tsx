@@ -96,7 +96,7 @@
 //         </html>
 //     )
 // }
-import type React from "react"
+import React, {Suspense} from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -106,7 +106,9 @@ import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from "@/components/auth/AuthContext"
-
+import {ErrorBoundary} from "next/dist/client/components/error-boundary";
+import Error from "./error"
+import NoInternetConnection from "@/components/no-internet-connection/NoInternetConnection";
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
@@ -173,14 +175,20 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
         <AuthProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                <div className="flex min-h-screen flex-col">
-                    <Navbar />
-                    <main className="flex-1">{children}</main>
-                    <Toaster />
-                    <Footer />
-                </div>
-            </ThemeProvider>
+            <Suspense fallback={""}>
+                <ErrorBoundary errorComponent={Error}>
+                    <NoInternetConnection>
+                        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                            <div className="flex min-h-screen flex-col">
+                                <Navbar />
+                                <main className="flex-1">{children}</main>
+                                <Toaster />
+                                <Footer />
+                            </div>
+                        </ThemeProvider>
+                    </NoInternetConnection>
+                </ErrorBoundary>
+            </Suspense>
         </AuthProvider>
         </body>
         </html>

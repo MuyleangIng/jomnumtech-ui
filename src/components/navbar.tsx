@@ -311,9 +311,6 @@ export function Navbar() {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
-    // Status states
-    const [isOnline, setIsOnline] = useState(true)
-    const [internetSpeed, setInternetSpeed] = useState<number | null>(null)
     const [currentTime, setCurrentTime] = useState(new Date())
     const [weather, setWeather] = useState<WeatherData | null>(null)
     const [location, setLocation] = useState<LocationData | null>(null)
@@ -408,55 +405,6 @@ export function Navbar() {
 
         getUserLocation()
     }, [])
-
-    // Check online status, update time, and measure internet speed
-    useEffect(() => {
-        // Initial online status
-        setIsOnline(navigator.onLine)
-
-        // Update time every second
-        const timeInterval = setInterval(() => {
-            setCurrentTime(new Date())
-        }, 1000)
-
-        // Listen for online/offline events
-        const handleOnline = () => setIsOnline(true)
-        const handleOffline = () => setIsOnline(false)
-
-        window.addEventListener("online", handleOnline)
-        window.addEventListener("offline", handleOffline)
-
-        // Measure internet speed
-        const checkInternetSpeed = async () => {
-            const startTime = Date.now()
-            try {
-                const response = await fetch("https://www.google.com/favicon.ico", {
-                    cache: "no-store",
-                    mode: "no-cors",
-                })
-                const endTime = Date.now()
-                const duration = endTime - startTime
-                // Calculate speed in Mbps (rough estimate)
-                const speedMbps = 0.01 / (duration / 1000)
-                setInternetSpeed(Number.parseFloat(speedMbps.toFixed(1)))
-            } catch (error) {
-                setInternetSpeed(null)
-            }
-        }
-
-        // Check speed initially and every 30 seconds
-        checkInternetSpeed()
-        const speedInterval = setInterval(checkInternetSpeed, 30000)
-
-        return () => {
-            clearInterval(timeInterval)
-            clearInterval(speedInterval)
-            window.removeEventListener("online", handleOnline)
-            window.removeEventListener("offline", handleOffline)
-        }
-    }, [])
-
-    // Format time as HH:MM:SS
     const formattedTime = currentTime
         .toLocaleTimeString([], {
             hour: "2-digit",
@@ -493,11 +441,11 @@ export function Navbar() {
                     </Link>
 
                     {/* Center - Compact Status Information with Dropdown */}
-                    <div className="hidden md:flex items-center space-x-6">
+                    <div className="hidden md:flex items-center">
                         {/* Location */}
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 gap-1 px-2">
+                                <Button variant="ghost" size="sm" className="h-8 gap-1">
                                     <MapPin className="h-4 w-4 text-blue-500" />
                                     {isLoading ? (
                                         <span className="text-xs">Loading...</span>
@@ -549,7 +497,7 @@ export function Navbar() {
                         {/* Time */}
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 gap-1 px-2">
+                                <Button variant="ghost" size="sm" className="h-8 gap-1">
                                     <Clock className="h-4 w-4" />
                                     <span className="text-xs font-medium">{formattedTime}</span>
                                     <ChevronDown className="h-3 w-3 opacity-50" />
@@ -627,34 +575,34 @@ export function Navbar() {
                         </div>
 
                         {/* Notifications (Bell Icon) with Alert Count*/}
-                        <div className="relative">
-                            <Button variant="ghost" size="icon" onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}>
-                                <Bell className="h-5 w-5" />
-                                {/* Notification Badge (Only shows if there are notifications) */}
-                                {3 > 0 && (
-                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                    3
-                  </span>
-                                )}
-                            </Button>
+                  {/*      <div className="relative">*/}
+                  {/*          <Button variant="ghost" size="icon" onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}>*/}
+                  {/*              <Bell className="h-5 w-5" />*/}
+                  {/*              /!* Notification Badge (Only shows if there are notifications) *!/*/}
+                  {/*              {3 > 0 && (*/}
+                  {/*                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">*/}
+                  {/*  3*/}
+                  {/*</span>*/}
+                  {/*              )}*/}
+                  {/*          </Button>*/}
 
-                            {/* Notification Dropdown (Centered Below) */}
-                            {isNotificationsOpen && (
-                                <div
-                                    ref={dropdownRef}
-                                    className="absolute right-1/2 translate-x-1/2 mt-2 w-64 bg-white shadow-md border rounded-lg p-3 z-50"
-                                >
-                                    <p className="text-sm font-semibold">Notifications</p>
-                                    <ul className="mt-2 space-y-2">
-                                        <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">🔔 New article published!</li>
-                                        <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">📩 You have a new message</li>
-                                        <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">
-                                            🚀 Check out our latest update!
-                                        </li>
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
+                  {/*          /!* Notification Dropdown (Centered Below) *!/*/}
+                  {/*          {isNotificationsOpen && (*/}
+                  {/*              <div*/}
+                  {/*                  ref={dropdownRef}*/}
+                  {/*                  className="absolute right-1/2 translate-x-1/2 mt-2 w-64 bg-white shadow-md border rounded-lg p-3 z-50"*/}
+                  {/*              >*/}
+                  {/*                  <p className="text-sm font-semibold">Notifications</p>*/}
+                  {/*                  <ul className="mt-2 space-y-2">*/}
+                  {/*                      <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">🔔 New article published!</li>*/}
+                  {/*                      <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">📩 You have a new message</li>*/}
+                  {/*                      <li className="text-sm p-2 hover:bg-gray-100 rounded cursor-pointer">*/}
+                  {/*                          🚀 Check out our latest update!*/}
+                  {/*                      </li>*/}
+                  {/*                  </ul>*/}
+                  {/*              </div>*/}
+                  {/*          )}*/}
+                  {/*      </div>*/}
 
                         <Button variant="ghost" size="icon" asChild>
                             <Link href="/write">
