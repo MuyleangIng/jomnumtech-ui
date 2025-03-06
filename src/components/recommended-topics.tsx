@@ -33,7 +33,7 @@ export function RecommendedTopics() {
         "Politics",
     ]
 
-    // Limit to 10 topics unless expanded
+    // Limit to 10 topic unless expanded
     const visibleTopics = showAll ? topics : topics.slice(0, 10)
 
     return (
