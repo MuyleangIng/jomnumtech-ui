@@ -10,7 +10,7 @@ export async function POST(request: Request) {
         }
 
         // Make request to your backend API
-        const response = await fetch("http://localhost:8000/verify-email", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/verify-email`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

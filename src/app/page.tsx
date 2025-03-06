@@ -24,24 +24,8 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            {/*<div className="hidden md:block">*/}
-            {/*  <Lottie*/}
-            {/*      animationData={animationData}*/}
-            {/*      loop={true}*/}
-            {/*      className="w-[500px] h-[400px] rounded-lg"*/}
-            {/*  />*/}
-            {/*</div>*/}
+
             <LottieHomePage/>
-            {/*<div className="hidden md:block">*/}
-            {/*  <Image*/}
-            {/*      src="/placeholder.svg?height=400&width=500"*/}
-            {/*      alt="Hero image"*/}
-            {/*      width={500}*/}
-            {/*      height={400}*/}
-            {/*      className="rounded-lg object-cover"*/}
-            {/*      priority*/}
-            {/*  />*/}
-            {/*</div>*/}
           </div>
         </section>
 
