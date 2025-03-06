@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { useAuth } from "@/components/auth/AuthContext"
+import { ForgotPasswordForm } from "./ForgotPasswordForm"
+import { ForgotUsernameForm } from "./ForgotUsernameForm"
+import { ForgotEmailForm } from "./ForgotEmailForm"
+import Link from "next/link";
 
 interface SignInFormProps {
     onSuccess?: () => void
@@ -17,6 +21,9 @@ export function SignInFormButton({ onSuccess }: SignInFormProps) {
     const [identifier, setIdentifier] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [showForgotPassword, setShowForgotPassword] = useState(false)
+    const [showForgotUsername, setShowForgotUsername] = useState(false)
+    const [showForgotEmail, setShowForgotEmail] = useState(false)
     const router = useRouter()
     const { toast } = useToast()
     const { setAuthState } = useAuth()
@@ -71,6 +78,18 @@ export function SignInFormButton({ onSuccess }: SignInFormProps) {
         window.location.href = googleAuthUrl
     }
 
+    if (showForgotPassword) {
+        return <ForgotPasswordForm onBack={() => setShowForgotPassword(false)} />
+    }
+
+    if (showForgotUsername) {
+        return <ForgotUsernameForm onBack={() => setShowForgotUsername(false)} />
+    }
+
+    if (showForgotEmail) {
+        return <ForgotEmailForm onBack={() => setShowForgotEmail(false)} />
+    }
+
     return (
         <div className="space-y-6">
             <form onSubmit={handleEmailSignIn} className="space-y-4">
@@ -103,6 +122,18 @@ export function SignInFormButton({ onSuccess }: SignInFormProps) {
                 </Button>
             </form>
 
+            <div className="flex justify-between text-sm">
+                <button type="button" onClick={() => setShowForgotPassword(true)} className="text-blue-600 hover:underline">
+                    Forgot password?
+                </button>
+                <button type="button" onClick={() => setShowForgotUsername(true)} className="text-blue-600 hover:underline">
+                    Forgot username?
+                </button>
+                <button type="button" onClick={() => setShowForgotEmail(true)} className="text-blue-600 hover:underline">
+                    Forgot email?
+                </button>
+            </div>
+
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
@@ -120,6 +151,30 @@ export function SignInFormButton({ onSuccess }: SignInFormProps) {
                 <Google className="mr-2 h-5 w-5" />
                 Sign in with Google
             </Button>
+            <div className="mt-4 text-center text-sm">
+                    <p>
+                        No account?{" "}
+                        <Link href="/register" >
+                        <button
+                            className="text-primary underline underline-offset-4 hover:text-primary/90"
+                        >
+                            Create one
+                        </button>
+                        </Link>
+                    </p>
+            </div>
+
+            <div className="mt-4 text-center text-xs text-muted-foreground">
+                Click &#34;Sign in&#34; to agree to JomNum Blog&#39;s{" "}
+                <Link href="/terms" className="underline underline-offset-4">
+                    Terms of Service
+                </Link>{" "}
+                and acknowledge that JomNum Blog&#39;s{" "}
+                <Link href="/privacy" className="underline underline-offset-4">
+                    Privacy Policy
+                </Link>{" "}
+                applies to you.
+            </div>
         </div>
     )
 }
