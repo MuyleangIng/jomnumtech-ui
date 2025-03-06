@@ -25,20 +25,20 @@
 //         address: false,
 //         telephone: false,
 //     },
-//     metadataBase: new URL("https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg"),
+//     metadataBase: new URL("https://jomnumtech-api.shinoshike.studio/uploads/045473bd-ba5d-4057-a824-96353082045b.jpg"),
 //     alternates: {
 //         canonical: "/",
 //     },
 //     openGraph: {
 //         type: "website",
 //         locale: "en_US",
-//         url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
+//         url: "https://jomnumtech-api.shinoshike.studio/uploads/045473bd-ba5d-4057-a824-96353082045b.jpg",
 //         title: "JomNum Blog | Where good ideas find you",
 //         description: "Discover stories, thinking, and expertise from writers on any topic.",
 //         siteName: "JomNum Blog",
 //         images: [
 //             {
-//                 url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
+//                 url: "https://jomnumtech-api.shinoshike.studio/uploads/045473bd-ba5d-4057-a824-96353082045b.jpg",
 //                 width: 1200,
 //                 height: 630,
 //                 alt: "JomNum Blog",
@@ -124,22 +124,22 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
-    metadataBase: new URL("https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg"),
+    metadataBase: new URL("https://jomnumtech-api.shinoshike.studio/uploads/045473bd-ba5d-4057-a824-96353082045b.jpg"),
     alternates: {
         canonical: "/",
     },
     openGraph: {
         type: "website",
         locale: "en_US",
-        url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
+        url: "https://jomnumtech-api.shinoshike.studio/uploads/045473bd-ba5d-4057-a824-96353082045b.jpg",
         title: "JomNum Blog | Where good ideas find you",
         description: "Discover stories, thinking, and expertise from writers on any topic.",
         siteName: "JomNum Blog",
         images: [
             {
-                url: "https://jomnumtech-api.shinoshike.studio/uploads/5ed4141d-5393-4174-8471-6dd3d8e8fb09.jpg",
-                width: 1200,
-                height: 630,
+                url: "https://jomnumtech-api.shinoshike.studio/uploads/045473bd-ba5d-4057-a824-96353082045b.jpg",
+                width: 800,
+                height: 600,
                 alt: "JomNum Blog",
             },
         ],
@@ -148,8 +148,8 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: "JomNum Blog | Where good ideas find you",
         description: "Discover stories, thinking, and expertise from writers on any topic.",
-        creator: "@mediumclone",
-        images: ["/twitter-image.png"],
+        creator: "@MuyleangIng",
+        images: ["https://jomnumtech-api.shinoshike.studio/uploads/045473bd-ba5d-4057-a824-96353082045b.jpg"],
     },
     robots: {
         index: true,

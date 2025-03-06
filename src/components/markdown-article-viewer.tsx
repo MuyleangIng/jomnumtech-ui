@@ -106,7 +106,7 @@ export function MarkdownArticleViewer({ article, author }: MarkdownArticleViewer
   useEffect(() => {
     const recordView = async () => {
       try {
-        await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${article.id}/view`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${article.id}/view`, {
           method: "POST",
         })
         setViewCount((prev) => prev + 1)

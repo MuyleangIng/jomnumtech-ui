@@ -31,7 +31,7 @@ export function AuthDialog({ open, onOpenChange, initialView = "sign-in" }: Auth
             </Button>
           </DialogHeader>
 
-          {view === "sign-in" ? <SignInForm onSuccess={() => onOpenChange(false)} /> : <SignUpForm />}
+          {view === "sign-in" ? <SignInForm onSuccess={() => onOpenChange(false)} /> : <SignUpForm onSuccess={() => onOpenChange(false)}/>}
 
           <div className="mt-4 text-center text-sm">
             {view === "sign-in" ? (

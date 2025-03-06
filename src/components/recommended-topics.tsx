@@ -66,7 +66,7 @@ export function RecommendedTopics() {
 
 async function fetchTags(): Promise<{ name: string }[]> {
     try {
-        const response = await fetch("https://jomnumtech-api.shinoshike.studio/tags/")
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/tags/`)
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`)

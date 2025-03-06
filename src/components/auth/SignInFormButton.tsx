@@ -60,7 +60,6 @@ export function SignInFormButton({ onSuccess }: SignInFormProps) {
         const clientId = "864319511903-9ppi277qfje6aa3nt2obh0d1tohlro2m.apps.googleusercontent.com"
         const redirectUri = `${window.location.origin}/auth/google/callback`
         const scope = "openid email profile"
-
         const googleAuthUrl =
             `https://accounts.google.com/o/oauth2/v2/auth?` +
             `client_id=${encodeURIComponent(clientId!)}&` +

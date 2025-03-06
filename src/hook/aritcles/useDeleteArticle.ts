@@ -21,7 +21,7 @@ export function useDeleteArticle() {
         setIsDeleting(true) // ✅ Start deleting
 
         try {
-            const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${articleId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${articleId}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${tokens.access_token}`,

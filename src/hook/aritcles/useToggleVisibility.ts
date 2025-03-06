@@ -23,7 +23,7 @@ export function useToggleVisibility() {
         setLoadingArticle(articleId) // Indicate loading state for the specific article
 
         try {
-            const response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${articleId}/visibility`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${articleId}/visibility`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${tokens.access_token}`,

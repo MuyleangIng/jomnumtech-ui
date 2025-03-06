@@ -66,14 +66,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }
 
-    useEffect(() => {
-        // ✅ Auto refresh token every 55s
-        const refreshInterval = setInterval(() => {
-            refreshAccessToken();
-        }, 55 * 1000); // Refresh 5s before expiry
-
-        return () => clearInterval(refreshInterval);
-    }, []);
+    // useEffect(() => {
+    //     // ✅ Auto refresh token every 55s
+    //     const refreshInterval = setInterval(() => {
+    //         refreshAccessToken();
+    //     }, 55 * 1000); // Refresh 5s before expiry
+    //
+    //     return () => clearInterval(refreshInterval);
+    // }, []);
 
     const refreshAccessToken = async () => {
         try {

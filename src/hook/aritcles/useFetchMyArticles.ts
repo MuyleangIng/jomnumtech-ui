@@ -42,7 +42,7 @@ export function useFetchMyArticles() {
             try {
                 console.log("Fetching user articles...")
 
-                const response = await fetch("https://jomnumtech-api.shinoshike.studio/articles/my", {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/my`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${tokens.access_token}`,

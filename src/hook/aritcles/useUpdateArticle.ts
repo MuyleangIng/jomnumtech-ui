@@ -10,7 +10,7 @@ export async function useUpdateArticle(id: number, article: Partial<Article>, to
     try {
         console.log(`Updating article with ID: ${id}`);
 
-        let response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}`, {
+        let response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${id}`, {
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export async function useUpdateArticle(id: number, article: Partial<Article>, to
             }
 
             // 🔄 Retry request with new token
-            response = await fetch(`https://jomnumtech-api.shinoshike.studio/articles/${id}`, {
+            response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/articles/${id}`, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${newToken}`,
