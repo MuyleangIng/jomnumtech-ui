@@ -271,8 +271,11 @@ export default function RootLayout({
                                    }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en" suppressHydrationWarning>
+        <meta name="google-adsense-account" content="ca-pub-3619132572394417"/>
         <head>
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3619132572394417" crossorigin="anonymous"></script>
+            <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3619132572394417"
+                    crossorigin="anonymous"></script>
         </head>
         <body className={inter.className}>
         <AuthProvider>
@@ -281,10 +284,10 @@ export default function RootLayout({
                     <NoInternetConnection>
                         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                             <div className="flex min-h-screen flex-col">
-                                <Navbar />
+                                <Navbar/>
                                 <main className="flex-1">{children}</main>
-                                <Toaster />
-                                <Footer />
+                                <Toaster/>
+                                <Footer/>
                             </div>
                         </ThemeProvider>
                     </NoInternetConnection>
